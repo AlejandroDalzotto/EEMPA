@@ -7,6 +7,8 @@ import chinchulin.varano.Models.Student;
 
 public interface StudentServiceInt {
 
+    List<Student> getAllActive();
+
     List<Student> getAll();
 
     Optional<Student> getById(Long id);

@@ -39,8 +39,8 @@ public class StudentService implements StudentServiceInt {
         return repo.save(newStudent(student));
     }
 
-
-    //TODO: Estaría bueno considerar reemplazar esto con implementación para un PATCH request  porque esto es una banda de data para la pobre red
+    // TODO: Estaría bueno considerar reemplazar esto con implementación para un
+    // PATCH request porque esto es una banda de data para la pobre red
     @Override
     public Student editStudent(Long id, Student newStudent) {
         return repo.findById(id)
@@ -77,6 +77,11 @@ public class StudentService implements StudentServiceInt {
                     return repo.save(student);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + id));
+    }
+
+    @Override
+    public List<Student> getAllActive() {
+        return repo.getAllActive();
     }
 
 }
