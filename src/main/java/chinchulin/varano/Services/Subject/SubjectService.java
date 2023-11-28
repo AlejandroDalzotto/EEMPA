@@ -3,11 +3,13 @@ package chinchulin.varano.Services.Subject;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Repositories.SubjectRepo;
 
+@Service
 public class SubjectService implements SubjectServiceInt {
 
     @Autowired
@@ -30,7 +32,7 @@ public class SubjectService implements SubjectServiceInt {
 
     @Override
     public Subject inactiveSubject(Long id) {
-    return repo.findById(id)
+        return repo.findById(id)
                 .map(subject -> {
                     subject.setActive(!subject.getActive());
                     return repo.save(subject);

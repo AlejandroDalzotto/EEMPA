@@ -3,11 +3,13 @@ package chinchulin.varano.Services.Module;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Module;
 import chinchulin.varano.Repositories.ModuleRepo;
 
+@Service
 public class ModuleService implements ModuleServiceInt {
 
     @Autowired

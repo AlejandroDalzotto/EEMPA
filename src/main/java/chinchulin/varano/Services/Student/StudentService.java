@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Student;
 import chinchulin.varano.Repositories.StudentRepo;
 
+@Service
 public class StudentService implements StudentServiceInt {
 
     @Autowired
@@ -21,7 +23,8 @@ public class StudentService implements StudentServiceInt {
 
     @Override
     public Optional<Student> getById(Long id) {
-        return repo.findById(id);
+        return Optional.ofNullable(repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student with id " + id + " not found")));
     }
 
     @Override
@@ -39,7 +42,8 @@ public class StudentService implements StudentServiceInt {
         return repo.save(newStudent(student));
     }
 
-    // TODO: Estaría bueno considerar reemplazar esto con implementación para un PATCH request porque esto es una banda de data para la pobre red
+    // TODO: Estaría bueno considerar reemplazar esto con implementación para un
+    // PATCH request porque esto es una banda de data para la pobre red
     @Override
     public Student editStudent(Long id, Student newStudent) {
         return repo.findById(id)
