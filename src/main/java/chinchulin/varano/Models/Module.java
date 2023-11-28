@@ -25,6 +25,9 @@ public class Module {
     @Nonnull
     String name;
 
-    @OneToMany(mappedBy="id_module")
+    @Column(name = "active")
+    Boolean active;
+
+    @OneToMany(mappedBy = "id_module")
     List<Subject> subjects;
 }
