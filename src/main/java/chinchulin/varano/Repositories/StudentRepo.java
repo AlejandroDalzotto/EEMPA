@@ -1,5 +1,7 @@
 package chinchulin.varano.Repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,6 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     @Query(value = "SELECT * FROM student u WHERE u.legajo = :legajo", nativeQuery = true)
     Student getByLegajo(@Param("legajo") Long legajo);
 
+    @Query(value = "SELECT * from student u WHERE u.active = :active", nativeQuery = true)
+    List<Student> getAllActive();
 }
