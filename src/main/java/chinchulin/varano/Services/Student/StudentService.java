@@ -39,7 +39,7 @@ public class StudentService implements StudentServiceInt {
 
     @Override
     public Student newStudent(Student student) {
-        return repo.save(newStudent(student));
+        return repo.save(student);
     }
 
     // TODO: Estaría bueno considerar reemplazar esto con implementación para un
@@ -59,7 +59,7 @@ public class StudentService implements StudentServiceInt {
                     student.setDni(newStudent.getDni());
                     student.setHealth(newStudent.getHealth());
                     student.setLastName(newStudent.getLastName());
-                    student.setLejago(newStudent.getLejago());
+                    student.setLegajo(newStudent.getLegajo());
                     student.setLinePhone(newStudent.getLinePhone());
                     student.setMail(newStudent.getMail());
                     student.setMatricula(newStudent.getMatricula());

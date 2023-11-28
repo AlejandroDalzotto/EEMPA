@@ -62,7 +62,7 @@ public class Student {
     String mail;
 
     @Column(name = "legajo")
-    Long lejago;
+    Long legajo;
 
     @Column(name = "matricula")
     Long matricula;
@@ -74,6 +74,7 @@ public class Student {
     Boolean studyCert;
 
     // acá decidí ponerle curso porque si le ponía año nos ibamos a confundir
+    //dudas sobre si añadir esto como uno de los modulos
     @Column(name = "course")
     int course;
 
