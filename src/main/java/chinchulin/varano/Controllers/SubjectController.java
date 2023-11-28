@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Subject.SubjectService;
 
 @RequestMapping("/api/subject")
+@RestController
 public class SubjectController {
 
     @Autowired
