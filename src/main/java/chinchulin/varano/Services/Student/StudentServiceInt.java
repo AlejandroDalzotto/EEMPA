@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.Subject;
 
 public interface StudentServiceInt {
 
     List<Student> getAllActive();
+
+    List<Subject> getSubjectByStudent(Long id);
 
     List<Student> getAll();
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Student.StudentService;
 
 @RequestMapping("/api/student")
@@ -34,6 +35,11 @@ public class StudentController {
     @GetMapping("/get/{id}")
     public Optional<Student> getById(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @GetMapping("/get/subject/{id}")
+    public List<Subject> getSubjectByStudent(@PathVariable Long id) {
+        return service.getSubjectByStudent(id);
     }
 
     @GetMapping("get/dni/{dni}")

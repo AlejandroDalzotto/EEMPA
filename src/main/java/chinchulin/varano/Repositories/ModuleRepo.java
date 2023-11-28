@@ -11,4 +11,5 @@ public interface ModuleRepo extends JpaRepository<Module, Long> {
 
     @Query(value = "SELECT * from module u WHERE u.active = true", nativeQuery = true)
     List<Module> getAllActive();
+
 }

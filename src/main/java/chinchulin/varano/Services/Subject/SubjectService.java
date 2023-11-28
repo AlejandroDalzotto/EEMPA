@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
+import chinchulin.varano.Models.Student;
 import chinchulin.varano.Models.Subject;
+import chinchulin.varano.Repositories.StudentRepo;
 import chinchulin.varano.Repositories.SubjectRepo;
 
 @Service
@@ -14,6 +16,9 @@ public class SubjectService implements SubjectServiceInt {
 
     @Autowired
     SubjectRepo repo;
+
+    @Autowired
+    StudentRepo studentRepo;
 
     @Override
     public List<Subject> getAll() {
@@ -39,6 +44,11 @@ public class SubjectService implements SubjectServiceInt {
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Subject not found with ID: " + id));
 
+    }
+
+    @Override
+    public List<Student> getStudentBySubject(Long id) {
+        return studentRepo.getStudentBySubject(id);
     }
 
 }

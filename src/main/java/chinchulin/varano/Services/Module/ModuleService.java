@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Module;
+import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Repositories.ModuleRepo;
+import chinchulin.varano.Repositories.SubjectRepo;
 
 @Service
 public class ModuleService implements ModuleServiceInt {
 
     @Autowired
     ModuleRepo repo;
+
+    @Autowired
+    SubjectRepo subjectRepo;
 
     @Override
     public List<Module> getAll() {
@@ -32,12 +37,17 @@ public class ModuleService implements ModuleServiceInt {
 
     @Override
     public Module inactiveSubject(Long id) {
-     return repo.findById(id)
+        return repo.findById(id)
                 .map(module -> {
                     module.setActive(!module.getActive());
                     return repo.save(module);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Module not found with ID: " + id));
+    }
+
+    @Override
+    public List<Subject> getSubjectByModule(Long id) {
+        return subjectRepo.getSubjectsByModule(id);
     }
 
 }

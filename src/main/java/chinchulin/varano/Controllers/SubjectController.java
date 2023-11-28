@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import chinchulin.varano.Models.Student;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Subject.SubjectService;
 
@@ -20,6 +21,11 @@ public class SubjectController {
 
     @Autowired
     SubjectService service;
+
+    @GetMapping("/get/student/{id}")
+    public List<Student> getStudentBySubject(@PathVariable Long id) {
+        return service.getStudentBySubject(id);
+    }
 
     @GetMapping("/all")
     public List<Subject> getAll() {

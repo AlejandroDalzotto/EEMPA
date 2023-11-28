@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import chinchulin.varano.Models.Module;
+import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Module.ModuleService;
 
 @RequestMapping("/api/module")
@@ -24,6 +25,11 @@ public class ModuleController {
     @GetMapping("/all")
     List<Module> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/get/subject/{id}")
+    List<Subject> getSubjectByModule(@PathVariable Long id) {
+        return service.getSubjectByModule(id);
     }
 
     @GetMapping("/active")

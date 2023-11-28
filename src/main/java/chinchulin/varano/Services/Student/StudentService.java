@@ -8,13 +8,18 @@ import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Repositories.StudentRepo;
+import chinchulin.varano.Repositories.SubjectRepo;
 
 @Service
 public class StudentService implements StudentServiceInt {
 
     @Autowired
     StudentRepo repo;
+
+    @Autowired
+    SubjectRepo subjectRepo;
 
     @Override
     public List<Student> getAll() {
@@ -85,6 +90,11 @@ public class StudentService implements StudentServiceInt {
     @Override
     public List<Student> getAllActive() {
         return repo.getAllActive();
+    }
+
+    @Override
+    public List<Subject> getSubjectByStudent(Long id) {
+        return subjectRepo.getSubjectByStudent(id);
     }
 
 }
