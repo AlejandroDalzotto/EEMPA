@@ -17,5 +17,5 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     Student getByLegajo(@Param("legajo") Long legajo);
 
     @Query(value = "SELECT * from student u WHERE u.active = :active", nativeQuery = true)
-    List<Student> getAllActive();
+    List<Student> getAllActive(@Param("active") Boolean active);
 }
