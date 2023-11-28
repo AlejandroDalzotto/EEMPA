@@ -81,6 +81,9 @@ public class Student {
     @Column(name = "health")
     Boolean health;
 
+    @Column(name = "active")
+    Boolean active;
+
     @ManyToMany
     @JoinTable(name = "student-subject", joinColumns = @JoinColumn(name = "id_student"), inverseJoinColumns = @JoinColumn(name = "id_subject"))
     List<Subject> subjects;
