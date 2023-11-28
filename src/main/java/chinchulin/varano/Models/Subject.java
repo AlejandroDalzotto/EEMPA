@@ -26,6 +26,9 @@ public class Subject {
     @Column(name = "name")
     String name;
 
+    @Column(name = "active")
+    Boolean active;
+
     @ManyToMany
     @JoinTable(name = "student-subject", joinColumns = @JoinColumn(name = "id_subject"), inverseJoinColumns = @JoinColumn(name = "id_student"))
     List<Student> students;
