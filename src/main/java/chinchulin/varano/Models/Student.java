@@ -3,6 +3,8 @@ package chinchulin.varano.Models;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -85,6 +87,7 @@ public class Student {
     Boolean active;
 
     @ManyToMany
+    @JsonBackReference(value = "subjects")
     @JoinTable(name = "student-subject", joinColumns = @JoinColumn(name = "id_student"), inverseJoinColumns = @JoinColumn(name = "id_subject"))
     List<Subject> subjects;
 }
