@@ -74,7 +74,7 @@ public class Student {
     Boolean studyCert;
 
     // acá decidí ponerle curso porque si le ponía año nos ibamos a confundir
-    //dudas sobre si añadir esto como uno de los modulos
+    // dudas sobre si añadir esto como uno de los modulos
     @Column(name = "course")
     int course;
 
