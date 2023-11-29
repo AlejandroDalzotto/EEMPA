@@ -19,6 +19,7 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     @Query(value = "SELECT * from student u WHERE u.active = true", nativeQuery = true)
     List<Student> getAllActive();
 
-    @Query(value = "SELECT*from student u WHERE u.id_subject=:subject", nativeQuery = true)
-    List<Student> getStudentBySubject(@Param("subject") Long id);
+    @Query(value = "SELECT * FROM student s JOIN `student-subject` ss ON s.id_student = ss.student_id WHERE ss.subject_id = :subject AND s.active=true" , nativeQuery = true)
+    List<Student> getActiveStudentBySubject(@Param("subject") Long id);
+
 }
