@@ -26,6 +26,6 @@ public class Calification {
 
     @JsonBackReference(value = "student_module")
     @ManyToOne
-    @JoinColumn(name = "student-subject")
+    @JoinColumn(name = "student_subject")
     Student_subject student_subject;
 }
