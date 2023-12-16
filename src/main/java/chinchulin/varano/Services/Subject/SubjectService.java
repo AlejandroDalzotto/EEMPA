@@ -48,7 +48,7 @@ public class SubjectService implements SubjectServiceInt {
 
     @Override
     public List<Student> getStudentBySubject(Long id) {
-        return studentRepo.getStudentBySubject(id);
+        return studentRepo.getActiveStudentBySubject(id);
     }
 
 }

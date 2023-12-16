@@ -26,4 +26,5 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     List<Student> getByFilterQuery(@Param("query") String query, @Param("limit") int limit,
             @Param("offset") int offset);
 
+
 }

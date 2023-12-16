@@ -16,6 +16,6 @@ public interface SubjectRepo extends JpaRepository<Subject, Long> {
     @Query(value = "SELECT * from subject u WHERE u.id_module = :module", nativeQuery = true)
     List<Subject> getSubjectsByModule(@Param("module") Long module);
 
-    @Query(value = "SELECT * from subject u WHERE u.id_student = :student", nativeQuery = true)
-    List<Subject> getSubjectByStudent(@Param("student") Long student);
+    @Query(value = "SELECT * FROM subject sub JOIN `student-subject` ss ON sub.id_subject = ss.subject_id WHERE ss.student_id = :student AND sub.active = true", nativeQuery = true)
+    List<Subject> getActiveSubjectByStudent(@Param("student") Long studentId);
 }

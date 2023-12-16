@@ -94,7 +94,7 @@ public class StudentService implements StudentServiceInt {
 
     @Override
     public List<Subject> getSubjectByStudent(Long id) {
-        return subjectRepo.getSubjectByStudent(id);
+        return subjectRepo.getActiveSubjectByStudent(id);
     }
 
     @Override
