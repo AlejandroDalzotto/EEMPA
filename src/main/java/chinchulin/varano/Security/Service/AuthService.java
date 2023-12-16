@@ -4,7 +4,7 @@ import chinchulin.varano.Exceptions.ResourceNotFoundException;
 import chinchulin.varano.Security.DTO.JwtDTO;
 import chinchulin.varano.Security.DTO.LoginUser;
 import chinchulin.varano.Security.DTO.NewUser;
-import chinchulin.varano.Security.JWT.JwtProvider;
+import chinchulin.varano.Security.JWT.JwtService;
 import chinchulin.varano.Security.Models.Rol;
 import chinchulin.varano.Security.Models.User;
 import chinchulin.varano.Security.Utils.RolName;
@@ -38,35 +38,41 @@ public class AuthService {
     RolService rolService;
 
     @Autowired
-    JwtProvider jwtProvider;
+    JwtService jwtService;
 
 
-    public void nuevo(@Valid @RequestBody NewUser newUser) {
+    public User NewUser(NewUser newUser) {
 
+        // convert to userDAO (db) + password encrypted
         User user = new User(newUser.getName(), newUser.getLastname(), newUser.getEmail(),
                 newUser.getUsername(),
                 passwordEncoder.encode(newUser.getPassword()));
 
 
+        // set roles, predetermined roles -> "user", and if contains "admin", push rol admin to the user.
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolName(RolName.ROLE_USER).orElseThrow(() -> new ResourceNotFoundException("Rol User not found")));
-        if (newUser.getRoles().contains("admin"))
-            roles.add(rolService.getByRolName(RolName.ROLE_ADMIN).orElseThrow(() -> new ResourceNotFoundException("Rol Admin not found")));
 
+        roles.add(rolService.getByRolName(RolName.ROLE_USER).get());
+        if (newUser.getRoles().contains("admin")) {
+            roles.add(rolService.getByRolName(RolName.ROLE_ADMIN).get());
+        }
+
+        // roles add to user
         user.setRoles(roles);
-        userService.saveUser(user);;
-
+        userService.saveUser(user);
+        return user;
     }
 
 
     public JwtDTO login(@Valid @RequestBody LoginUser loginUser) {
+
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtProvider.generateToken(authentication);
+        String jwt = jwtService.generateToken(authentication);
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 

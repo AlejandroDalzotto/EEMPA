@@ -9,11 +9,9 @@ import java.util.Collection;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class JwtDTO {
 
         private String token;
-        private String bearer = "Bearer";
         private String username;
         private Collection<? extends GrantedAuthority> authorities;
 

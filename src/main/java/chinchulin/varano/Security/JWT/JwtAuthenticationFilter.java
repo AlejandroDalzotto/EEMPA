@@ -18,28 +18,44 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+    private final static Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Autowired
-    JwtProvider jwtProvider;
+    JwtService jwtService;
 
     @Autowired
     UserDetailsServiceImpl detailsServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String token = getToken(req);
-            System.out.println("Valor del token obtenido: "+ token);
 
-            if(token != null && jwtProvider.validateToken(token)){
-                String username = jwtProvider.getUsernameFromToken(token);
+        try {
+            //1. in the request, get token in with the method 'GetToken' of the header.
+            String token = getToken(req);
+            System.out.println("token value: "+ token);
+
+            // 2.token validation. ¿Does the token exist and is it well-formed?
+            if(token != null && jwtService.validateToken(token)){
+
+                //3 get username from payload in the jwt
+                String username = jwtService.getUsernameFromToken(token);
+
+                //4 get PrincipalUser, not user(DAO) in the payload from jwt (this method 'loadUserByUsername' return UserDetails why Entity User implement UserDetails interface
                 UserDetails userDetails = detailsServiceImpl.loadUserByUsername(username);
 
+                /*5.
+                *this class implement an interface that interests us.
+                * class -> UsernamePasswordAuthenticationToken implement AbstractAuthenticationToken
+                * class -> AbstractAuthenticationToken implement Authentication and CredentialsContainer
+                * Authentication is the interface that interests us, with that we can access
+                * Spring Security's SecurityContextHolder
+                 */
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                //6. Set the object Authentication the SecurityContextHolder (Spring Security)
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (Exception e){

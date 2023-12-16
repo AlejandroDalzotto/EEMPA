@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class NewUser {
 
-        //use this object for get all personal data  the users. (DTO)
         @NotBlank
         private String name;
 

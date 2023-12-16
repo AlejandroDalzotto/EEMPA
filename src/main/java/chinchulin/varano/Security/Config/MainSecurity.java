@@ -1,7 +1,7 @@
 package chinchulin.varano.Security.Config;
 
-import chinchulin.varano.Security.JWT.JwtEntryPoint;
-import chinchulin.varano.Security.JWT.JwtTokenFilter;
+import chinchulin.varano.Security.JWT.JwtException;
+import chinchulin.varano.Security.JWT.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,13 +26,13 @@ public class MainSecurity {
     UserDetailsService userDetailsServiceImpl;
 
     @Autowired
-    JwtEntryPoint jwtEntryPoint;
+    JwtException jwtException;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
     AuthenticationManager authenticationManager;
 
@@ -55,8 +55,8 @@ public class MainSecurity {
                     authConfig.anyRequest().authenticated();
                 })
 
-        .exceptionHandling( handing -> handing.authenticationEntryPoint(jwtEntryPoint))
-        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        .exceptionHandling( handing -> handing.authenticationEntryPoint(jwtException))
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

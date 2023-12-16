@@ -12,16 +12,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 
 
 @Service
-public class JwtProvider {
+public class JwtService {
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private final static Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-    private static final String SECRET_KEY = "5468576D5A7134743777397A24432646294A404E635266556A586E3272357538";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     @Value("${jwt.expiration}")
     private long EXPIRATION_MINUTES;
@@ -72,9 +72,10 @@ public class JwtProvider {
                 .parseSignedClaims(token).getPayload();
     }
 
+    /*
+    * */
     private SecretKey generateKey(){
         byte[] secretBytes = Decoders.BASE64URL.decode(SECRET_KEY);
-        //secretBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
         return Keys.hmacShaKeyFor(secretBytes);
     }
 

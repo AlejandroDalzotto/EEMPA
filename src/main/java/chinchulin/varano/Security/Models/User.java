@@ -40,6 +40,7 @@ public class User {
     @JoinTable(name = "user_rol", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles = new HashSet<>();
 
+    //Constructor no roles
     public User(@NotNull String name, @NotNull String lastname, @NotNull String email,
                    @NotNull String username, @NotNull String password) {
         this.name = name;

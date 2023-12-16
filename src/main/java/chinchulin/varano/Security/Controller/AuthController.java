@@ -3,6 +3,7 @@ package chinchulin.varano.Security.Controller;
 import chinchulin.varano.Security.DTO.JwtDTO;
 import chinchulin.varano.Security.DTO.LoginUser;
 import chinchulin.varano.Security.DTO.NewUser;
+import chinchulin.varano.Security.Models.User;
 import chinchulin.varano.Security.Service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,16 @@ public class AuthController {
     AuthService authService;
 
 
-    @PostMapping("/new")
+    @PostMapping("/register")
     public ResponseEntity<?> CreateUser (@Valid @RequestBody NewUser newUser) {
 
-        authService.nuevo(newUser);
+        User user = authService.NewUser(newUser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    return ResponseEntity.status(HttpStatus.CREATED).body(user);
+
 
     }
 
-    // LOGIN usuario
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login (@Valid @RequestBody LoginUser loginUser) {
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+// Class that runs as soon as the app starts and creates the corresponding roles.
 @Component
 public class CreateRoles implements CommandLineRunner {
 
@@ -14,13 +15,15 @@ public class CreateRoles implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Rol rolAdmin = new Rol(RolName.ROLE_ADMIN);
+
         Rol rolUser = new Rol(RolName.ROLE_USER);
-        rolService.save(rolAdmin);
+        Rol rolAdmin = new Rol(RolName.ROLE_ADMIN);
         rolService.save(rolUser);
+        rolService.save(rolAdmin);
+
     }
 
 }
 
-*/
 
+*/

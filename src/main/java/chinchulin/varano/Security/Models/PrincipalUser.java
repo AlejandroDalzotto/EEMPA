@@ -26,16 +26,6 @@ public class PrincipalUser implements UserDetails{
 
     private String password;
 
-    /**
-     * De aqui en adelante. todo complicado de explicar
-     * 1. crear una coleccion de Authoridades. (Linea 50)
-     * 2. Crear un constructor con todas las propiedad (linea 25)
-     * 3. Crear un metodo Build() -> (linea 52)
-     * Bien. para resumir. este método lo que hace es revisar si el usuario es un administrador o un user.
-     * Primera parte: crea una lista de authorities. revisara cual es el rol del usuario. y lo guarda en esa lista.
-     * Segunda parte: creara un nuevo usuario principal pasando como ultimo parametro el "authorities".
-     */
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public static PrincipalUser build(User user) {
