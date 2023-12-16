@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import chinchulin.varano.Models.Student;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Student.StudentService;
+import jakarta.annotation.Nullable;
 
 @RequestMapping("/api/student")
 @RestController
@@ -65,5 +67,14 @@ public class StudentController {
     @PutMapping("/inactive/{id}")
     public Student inactiveStudent(@PathVariable Long id) {
         return service.inactiveStudent(id);
+    }
+
+    @GetMapping("/all/filter")
+    public List<Student> getByFilter(@RequestParam(name = "query", required = false) @Nullable String query,
+            @RequestParam(name = "limit", required = true) Integer limit, @RequestParam(name = "limit", required = true) Integer offset ) {
+        if (query == null || query.isEmpty()) {
+            return service.getAll();
+        }
+        return service.getByFilterQuery(query, limit, offset);
     }
 }

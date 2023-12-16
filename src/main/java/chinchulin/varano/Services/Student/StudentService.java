@@ -97,4 +97,10 @@ public class StudentService implements StudentServiceInt {
         return subjectRepo.getSubjectByStudent(id);
     }
 
+    @Override
+    public List<Student> getByFilterQuery(String query, int limit, int offset){
+        return repo.getByFilterQuery(query, limit, offset);
+    }
+
+
 }

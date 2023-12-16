@@ -25,4 +25,6 @@ public interface StudentServiceInt {
     Student editStudent(Long id, Student student);
 
     Student inactiveStudent(Long id);
+
+    List<Student> getByFilterQuery(String query, int limit, int offset);
 }
