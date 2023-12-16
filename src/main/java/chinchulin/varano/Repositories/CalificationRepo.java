@@ -10,6 +10,6 @@ import chinchulin.varano.Models.Calification;
 
 public interface CalificationRepo extends JpaRepository<Calification, Long> {
 
-    @Query(value = "SELECT * FROM calification u WHERE u.student_subject = :student-subject", nativeQuery = true)
-    List<Calification> getByStudentAndSubject(@Param("student-subject") Long student_subject);
+    @Query(value = "SELECT * FROM calification u WHERE u.student_subject = :student_subject", nativeQuery = true)
+    List<Calification> getByStudentAndSubject(@Param("student_subject") Long student_subject);
 }

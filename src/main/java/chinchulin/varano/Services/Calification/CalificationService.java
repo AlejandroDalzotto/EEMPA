@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Models.Calification;
 import chinchulin.varano.Repositories.CalificationRepo;
-import chinchulin.varano.Repositories.Student_subjectRepo;
 import chinchulin.varano.Services.Student_subject.Student_subjectService;
 
 @Service
