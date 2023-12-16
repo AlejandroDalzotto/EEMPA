@@ -89,6 +89,9 @@ public class Student {
 
     @ManyToMany
     @JsonBackReference(value = "subjects")
-    @JoinTable(name = "student-subject", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
+
+    @JoinTable(name = "student_subject", joinColumns = @JoinColumn(name = "id_student"), inverseJoinColumns = @JoinColumn(name = "id_subject"))
     List<Subject> subjects;
+
+    
 }

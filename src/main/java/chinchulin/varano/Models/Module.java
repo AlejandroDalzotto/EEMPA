@@ -30,7 +30,7 @@ public class Module {
     @Column(name = "active")
     Boolean active;
 
-     @JsonBackReference(value = "subjects")
+    @JsonBackReference(value = "subjects")
     @OneToMany(mappedBy = "id_subject")
     List<Subject> subjects;
 }
