@@ -1,3 +1,1 @@
-This script is executing run automatic with start application.
-
-Script SQL -> ./src/main/resource/import.sql
+Repositorio para el back end de Varano. El repositorio al front end se encuentra en https://github.com/AlejandroDalzotto/students-app-frontend.git
