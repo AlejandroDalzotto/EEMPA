@@ -1,11 +1,11 @@
 USE varano;
 
 CREATE TABLE
-    IF NOT EXISTS rol (id BIGINT PRIMARY KEY, rol_name VARCHAR(255));
+    IF NOT EXISTS rol (id BIGINT AUTO_INCREMENT PRIMARY KEY, rol_name VARCHAR(255));
 
 CREATE TABLE
     IF NOT EXISTS user (
-        id BIGINT PRIMARY KEY,
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(255),
         lastName VARCHAR(255),
         name VARCHAR(255),
@@ -15,7 +15,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS user_rol (
-        user_id BIGINT,
+        user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
         rol_id BIGINT,
         FOREIGN KEY (user_id) REFERENCES user (id),
         FOREIGN KEY (rol_id) REFERENCES rol (id)
