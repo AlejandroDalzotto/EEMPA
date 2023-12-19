@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-
 @Service
 public class JwtService {
 
@@ -26,8 +25,8 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long EXPIRATION_MINUTES;
 
-    //Genera el token
-    public String generateToken(Authentication authentication){
+    // Genera el token
+    public String generateToken(Authentication authentication) {
 
         Date issuedAt = new Date(System.currentTimeMillis());
 
@@ -43,24 +42,23 @@ public class JwtService {
                 .compact();
     }
 
-
-    public String getUsernameFromToken(String token){
+    public String getUsernameFromToken(String token) {
         return getPayload(token).getSubject();
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             getPayload(token);
             return true;
-        }catch (MalformedJwtException e){
+        } catch (MalformedJwtException e) {
             logger.error("token mal formado");
-        }catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             logger.error("token no soportado");
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             logger.error("token expirado");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error("token vacío");
-        }catch (SignatureException e) {
+        } catch (SignatureException e) {
             logger.error("fail en la firma");
         }
 
@@ -74,10 +72,9 @@ public class JwtService {
 
     /*
     * */
-    private SecretKey generateKey(){
+    private SecretKey generateKey() {
         byte[] secretBytes = Decoders.BASE64URL.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(secretBytes);
     }
-
 
 }
