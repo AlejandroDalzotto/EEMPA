@@ -1,7 +1,10 @@
 USE varano;
 
 CREATE TABLE
-    IF NOT EXISTS rol (id BIGINT AUTO_INCREMENT PRIMARY KEY, rol_name VARCHAR(255));
+    IF NOT EXISTS rol (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        rol_name VARCHAR(255)
+    );
 
 CREATE TABLE
     IF NOT EXISTS user (
@@ -23,14 +26,14 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS module (
-        id_module BIGINT PRIMARY KEY,
+        id_module BIGINT AUTO_INCREMENT PRIMARY KEY,
         active BOOLEAN,
         name VARCHAR(255)
     );
 
 CREATE TABLE
     IF NOT EXISTS subject (
-        id_subject BIGINT PRIMARY KEY,
+        id_subject BIGINT AUTO_INCREMENT PRIMARY KEY,
         active BOOLEAN,
         name VARCHAR(255),
         id_module BIGINT,
@@ -39,7 +42,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS student (
-        id_student BIGINT PRIMARY KEY,
+        id_student BIGINT AUTO_INCREMENT PRIMARY KEY,
         active BOOLEAN,
         address VARCHAR(255),
         age int (11),
@@ -61,7 +64,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS student_subject (
-        student_subject_id BIGINT PRIMARY KEY,
+        student_subject_id BIGINT AUTO_INCREMENT PRIMARY KEY,
         id_student BIGINT,
         id_subject BIGINT,
         FOREIGN KEY (id_student) REFERENCES student (id_student),
@@ -70,7 +73,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS calification (
-        id_calification BIGINT PRIMARY KEY,
+        id_calification BIGINT AUTO_INCREMENT PRIMARY KEY,
         value int,
         student_subject BIGINT,
         FOREIGN KEY (student_subject) REFERENCES student_subject (student_subject_id)
