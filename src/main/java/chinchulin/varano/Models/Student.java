@@ -30,7 +30,7 @@ public class Student {
     @Nonnull
     String name;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     @Nonnull
     String lastName;
 
@@ -49,10 +49,10 @@ public class Student {
     @Nonnull
     Integer dni;
 
-    @Column(name = "cellPhone")
+    @Column(name = "cell_phone")
     Long cellPhone;
 
-    @Column(name = "linePhone")
+    @Column(name = "line_phone")
     Long linePhone;
 
     @Column(name = "age")
@@ -67,10 +67,10 @@ public class Student {
     @Column(name = "matricula")
     Long matricula;
 
-    @Column(name = "birthCert")
+    @Column(name = "birth_cert")
     Boolean birthCert;
 
-    @Column(name = "studyCert")
+    @Column(name = "study_cert")
     Boolean studyCert;
 
     // acá decidí ponerle curso porque si le ponía año nos ibamos a confundir

@@ -42,24 +42,24 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS student (
-        id_student BIGINT AUTO_INCREMENT PRIMARY KEY,
+        id_student BIGINT  PRIMARY KEY,
         active BOOLEAN,
         address VARCHAR(255),
         age int (11),
         birth DATE,
-        birthCert BOOLEAN,
-        cellPhone BIGINT,
+        birth_cert BOOLEAN,
+        cell_phone BIGINT,
         course int (11),
         disability BOOLEAN,
         dni int (11),
         health int (11),
-        lastName VARCHAR(255),
+        last_name VARCHAR(255),
         legajo BIGINT,
-        linePhone int (11),
+        line_phone int (11),
         mail VARCHAR(255),
         matricula BIGINT,
         sex VARCHAR(5),
-        studyCert BOOLEAN
+        study_cert BOOLEAN
     );
 
 CREATE TABLE
@@ -73,7 +73,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS calification (
-        id_calification BIGINT AUTO_INCREMENT PRIMARY KEY,
+        id_calification BIGINT  PRIMARY KEY,
         value int,
         student_subject BIGINT,
         FOREIGN KEY (student_subject) REFERENCES student_subject (student_subject_id)
