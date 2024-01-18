@@ -10,20 +10,26 @@ import chinchulin.varano.Models.Student;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
 
-    @Query(value = "SELECT * FROM student u WHERE u.dni = :dni", nativeQuery = true)
-    Student getByDNI(@Param("dni") Long dni);
+        @Query(value = "SELECT * FROM student u WHERE u.dni = :dni", nativeQuery = true)
+        Student getByDNI(@Param("dni") Long dni);
 
-    @Query(value = "SELECT * FROM student u WHERE u.legajo = :legajo", nativeQuery = true)
-    Student getByLegajo(@Param("legajo") Long legajo);
+        @Query(value = "SELECT * FROM student u WHERE u.legajo = :legajo", nativeQuery = true)
+        Student getByLegajo(@Param("legajo") Long legajo);
 
-    @Query(value = "SELECT * from student u WHERE u.active = true", nativeQuery = true)
-    List<Student> getAllActive();
+        @Query(value = "SELECT * from student u WHERE u.active = true", nativeQuery = true)
+        List<Student> getAllActive();
 
-    @Query(value = "SELECT* from student u WHERE u.id_subject=:subject AND active=true", nativeQuery = true)
-    List<Student> getActiveStudentBySubject(@Param("subject") Long id);
+        @Query(value = "SELECT* from student u WHERE u.id_subject=:subject AND active=true", nativeQuery = true)
+        List<Student> getActiveStudentBySubject(@Param("subject") Long id);
 
-    @Query(value = "SELECT * FROM student u WHERE u.name ILIKE %:query% OR u.last_name ILIKE %:query% OR u.address ILIKE %:query% OR CAST(u.dni AS text) ILIKE %:query% OR CAST(u.legajo AS text) ILIKE %:query% AND u.active = true LIMIT :limit OFFSET :offset", nativeQuery = true)
-    List<Student> getByFilterQuery(@Param("query") String query, @Param("limit") int limit,
-            @Param("offset") int offset);
+        @Query(value = "SELECT * FROM student u WHERE u.name ILIKE %:query% OR u.last_name ILIKE %:query% OR u.address ILIKE %:query% OR CAST(u.dni AS text) ILIKE %:query% OR CAST(u.legajo AS text) ILIKE %:query% AND u.active = true LIMIT :limit OFFSET :offset", nativeQuery = true)
+        List<Student> getByFilterQuery(@Param("query") String query, @Param("limit") int limit,
+                        @Param("offset") int offset);
 
+        @Query(value = "SELECT * FROM student u  AND u.active = true LIMIT :limit OFFSET :offset", nativeQuery = true)
+        List<Student> getAmountActive(@Param("limit") int limit,
+                        @Param("offset") int offset);
+
+        @Query(value = " SELECT COUNT(u.id_student) FROM student u WHERE u.active = true", nativeQuery = true)
+        int getTotal();
 }
