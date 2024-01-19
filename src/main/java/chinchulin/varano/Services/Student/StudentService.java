@@ -102,7 +102,7 @@ public class StudentService implements StudentServiceInt {
     public StudentAnswer getByFilterQuery(String query, int limit, int offset) {
         StudentAnswer response = new StudentAnswer();
         response.setStudents(repo.getByFilterQuery(query, limit, offset));
-        response.setPages(limit);
+        response.setPages(pages(limit));
         return response;
     }
 
@@ -116,7 +116,7 @@ public class StudentService implements StudentServiceInt {
 
     public int pages(int limit) {
         int pages = repo.getTotal() / limit;
-        if ((pages % limit) != 0) {
+        if (((pages % limit) != 0)|| repo.getTotal() < limit) {
             pages++;
         }
         return pages;
