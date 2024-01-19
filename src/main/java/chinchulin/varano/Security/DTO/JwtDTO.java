@@ -1,11 +1,11 @@
 package chinchulin.varano.Security.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
