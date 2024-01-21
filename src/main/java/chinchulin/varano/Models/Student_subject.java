@@ -22,14 +22,14 @@ public class Student_subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student-subject_id")
+    @Column(name = "student_subject_id")
     Long student_subject_Id;
 
-    @Column(name = "student_id")
-    Long student_id;
+    @Column(name = "id_student")
+    Long id_student;
 
-    @Column(name = "subject_id")
-    Long subject_id;
+    @Column(name = "id_subject")
+    Long id_subject;
 
     @JsonBackReference(value = "califications")
     @OneToMany(mappedBy = "student_subject")

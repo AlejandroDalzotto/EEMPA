@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.StudentAnswer;
 import chinchulin.varano.Models.Subject;
 
 public interface StudentServiceInt {
@@ -26,5 +27,7 @@ public interface StudentServiceInt {
 
     Student inactiveStudent(Long id);
 
-    List<Student> getByFilterQuery(String query, int limit, int offset);
+    StudentAnswer getByFilterQuery(String query, int limit, int offset);
+
+    StudentAnswer getAmountActive(int limit, int offset);
 }

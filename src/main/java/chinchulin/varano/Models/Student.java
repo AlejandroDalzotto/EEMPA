@@ -3,11 +3,15 @@ package chinchulin.varano.Models;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -20,9 +24,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "student")
+@CrossOrigin("localhost:3000")
 public class Student {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_student")
     Long id_student;
 
@@ -30,7 +36,7 @@ public class Student {
     @Nonnull
     String name;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     @Nonnull
     String lastName;
 
@@ -49,10 +55,10 @@ public class Student {
     @Nonnull
     Integer dni;
 
-    @Column(name = "cellPhone")
+    @Column(name = "cell_phone")
     Long cellPhone;
 
-    @Column(name = "linePhone")
+    @Column(name = "line_phone")
     Long linePhone;
 
     @Column(name = "age")
@@ -67,10 +73,10 @@ public class Student {
     @Column(name = "matricula")
     Long matricula;
 
-    @Column(name = "birthCert")
+    @Column(name = "birth_cert")
     Boolean birthCert;
 
-    @Column(name = "studyCert")
+    @Column(name = "study_cert")
     Boolean studyCert;
 
     // acá decidí ponerle curso porque si le ponía año nos ibamos a confundir
@@ -93,5 +99,4 @@ public class Student {
     @JoinTable(name = "student_subject", joinColumns = @JoinColumn(name = "id_student"), inverseJoinColumns = @JoinColumn(name = "id_subject"))
     List<Subject> subjects;
 
-    
 }

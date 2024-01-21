@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.StudentAnswer;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Student.StudentService;
 import jakarta.annotation.Nullable;
@@ -70,10 +71,11 @@ public class StudentController {
     }
 
     @GetMapping("/all/filter")
-    public List<Student> getByFilter(@RequestParam(name = "query", required = false) @Nullable String query,
-            @RequestParam(name = "limit", required = true) Integer limit, @RequestParam(name = "limit", required = true) Integer offset ) {
+    public StudentAnswer getByFilter(@RequestParam(name = "query", required = false) @Nullable String query,
+            @RequestParam(name = "limit", required = true) Integer limit,
+            @RequestParam(name = "offset", required = true) Integer offset) {
         if (query == null || query.isEmpty()) {
-            return service.getAll();
+            return service.getAmountActive(limit, offset);
         }
         return service.getByFilterQuery(query, limit, offset);
     }

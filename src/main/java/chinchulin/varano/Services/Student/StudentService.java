@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.StudentAnswer;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Repositories.StudentRepo;
 import chinchulin.varano.Repositories.SubjectRepo;
@@ -98,9 +99,26 @@ public class StudentService implements StudentServiceInt {
     }
 
     @Override
-    public List<Student> getByFilterQuery(String query, int limit, int offset){
-        return repo.getByFilterQuery(query, limit, offset);
+    public StudentAnswer getByFilterQuery(String query, int limit, int offset) {
+        StudentAnswer response = new StudentAnswer();
+        response.setStudents(repo.getByFilterQuery(query, limit, offset));
+        response.setPages(pages(limit));
+        return response;
     }
 
+    @Override
+    public StudentAnswer getAmountActive(int limit, int offset) {
+        StudentAnswer response = new StudentAnswer();
+        response.setPages(pages(limit));
+        response.setStudents(repo.getAmountActive(limit, offset));
+        return response;
+    }
 
+    public int pages(int limit) {
+        int pages = repo.getTotal() / limit;
+        if (((pages % limit) != 0)|| repo.getTotal() < limit) {
+            pages++;
+        }
+        return pages;
+    }
 }

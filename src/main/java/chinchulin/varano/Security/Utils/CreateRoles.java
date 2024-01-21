@@ -1,12 +1,11 @@
-package chinchulin.varano.Security.Utils;
-/*
+/*package chinchulin.varano.Security.Utils;
 import chinchulin.varano.Security.Models.Rol;
 import chinchulin.varano.Security.Service.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-// Class that runs as soon as the app starts and creates the corresponding roles.
+
 @Component
 public class CreateRoles implements CommandLineRunner {
 
@@ -24,6 +23,5 @@ public class CreateRoles implements CommandLineRunner {
     }
 
 }
-
 
 */

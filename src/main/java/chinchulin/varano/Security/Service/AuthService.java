@@ -1,14 +1,8 @@
 package chinchulin.varano.Security.Service;
 
-import chinchulin.varano.Exceptions.ResourceNotFoundException;
-import chinchulin.varano.Security.DTO.JwtDTO;
-import chinchulin.varano.Security.DTO.LoginUser;
-import chinchulin.varano.Security.DTO.NewUser;
-import chinchulin.varano.Security.JWT.JwtService;
-import chinchulin.varano.Security.Models.Rol;
-import chinchulin.varano.Security.Models.User;
-import chinchulin.varano.Security.Utils.RolName;
-import jakarta.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashSet;
-import java.util.Set;
+import chinchulin.varano.Security.DTO.JwtDTO;
+import chinchulin.varano.Security.DTO.LoginUser;
+import chinchulin.varano.Security.DTO.NewUser;
+import chinchulin.varano.Security.JWT.JwtService;
+import chinchulin.varano.Security.Models.Rol;
+import chinchulin.varano.Security.Models.User;
+import chinchulin.varano.Security.Utils.RolName;
+import jakarta.validation.Valid;
 
 @Service
 public class AuthService {
