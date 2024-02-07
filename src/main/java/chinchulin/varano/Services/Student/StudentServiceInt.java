@@ -1,33 +1,35 @@
 package chinchulin.varano.Services.Student;
 
 import java.util.List;
-import java.util.Optional;
-
-import chinchulin.varano.Models.Student;
-import chinchulin.varano.Models.StudentAnswer;
 import chinchulin.varano.Models.Subject;
+import chinchulin.varano.Payloads.DTO.StudentDTO;
+import chinchulin.varano.Payloads.Request.StudentRequest;
 
 public interface StudentServiceInt {
 
-    List<Student> getAllActive();
+    List<StudentDTO> getAllActive();
 
     List<Subject> getSubjectByStudent(Long id);
 
-    List<Student> getAll();
+    List<StudentDTO> getAll();
 
-    Optional<Student> getById(Long id);
+    StudentDTO getById(Long id);
 
-    Student getByDNI(Long dni);
+    StudentDTO getByDNI(Long dni);
 
-    Student getByLegajo(Long legajo);
+    StudentDTO getByLegajo(Long legajo);
 
-    Student newStudent(Student student);
+    StudentDTO newStudent(StudentRequest student);
 
-    Student editStudent(Long id, Student student);
+    StudentDTO editStudent(Long id, StudentRequest student);
 
-    Student inactiveStudent(Long id);
+    StudentDTO inactiveStudent(Long id);
 
-    StudentAnswer getByFilterQuery(String query, int limit, int offset);
+    List<StudentDTO> getByFilterQuery(String query, int limit, int offset);
 
-    StudentAnswer getAmountActive(int limit, int offset);
+    List<StudentDTO> getByQueryBlank(int limit, int offset);
+
+    Long count();
+
+    Long countByTerm(String term);
 }

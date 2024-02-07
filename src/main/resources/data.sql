@@ -1,98 +1,55 @@
-INSERT INTO
-    rol
-VALUES
-    (null, 'ROLE_USER'),
-    (null, 'ROLE_ADMIN');
+--INSERT INTO
+--    rol
+--VALUES
+--    (null, 'ROLE_USER'),
+--    (null, 'ROLE_ADMIN');
 
-INSERT INTO
-    user
-VALUES
-    (
-        1,
-        'ale@gmail.com',
-        'Dalzotto',
-        'Alejandro',
-        '$2a$10$PzTNVIVNVqTTDIkpylYg9.a8H3A.9La99eHLk.QZ8dhI/6ny5KaW.',
-        'alejandro'
-    );
+--INSERT INTO
+--    user
+--VALUES
+--    (
+--        1,
+--        'ale@gmail.com',
+--        'Dalzotto',
+--        'Alejandro',
+--        '$2a$10$PzTNVIVNVqTTDIkpylYg9.a8H3A.9La99eHLk.QZ8dhI/6ny5KaW.',
+--        'alejandro'
+--    );
 
-INSERT INTO
-    user_rol
-VALUES
-    (1, 1);
+--INSERT INTO
+--    user_rol
+--VALUES
+--    (1, 1);
 
-INSERT INTO
-    module
-VALUES
-    (1, 1, "primer modulo"),
-    (1, 2, "segundo modulo"),
-    (1, 3, "tercer modulo"),
-    (1, 4, "cuarto modulo"),
-    (1, 5, "quinto modulo"),
-    (1, 6, "sexto modulo");
-
-INSERT INTO
-    varano.student (
-        active,
-        age,
-        birth,
-        birth_cert,
-        course,
-        disability,
-        dni,
-        health,
-        study_cert,
-        cell_phone,
-        id_student,
-        legajo,
-        line_phone,
-        matricula,
-        address,
-        last_name,
-        mail,
-        name,
-        sex
-    )
-VALUES
-    (
-        1,
-        21,
-        '2002-07-16',
-        1,
-        1,
-        0,
-        43958587,
-        1,
-        1,
-        3462698422,
-        1,
-        4214,
-        NULL,
-        8387,
-        'Garbarino 64',
-        'Coronel',
-        'coronelmartinernesto@gmail.com',
-        'Martín',
-        'M'
-    ),
-    (
-        1,
-        21,
-        '2002-01-27',
-        1,
-        1,
-        0,
-        43858587,
-        1,
-        1,
-        3462367806,
-        2,
-        4214,
-        NULL,
-        8387,
-        '26 de Abril 883',
-        'García',
-        'garciaayelentamara@gmail.com',
-        'Tamara',
-        'F'
-    );
+--INSERT INTO
+--    module
+--VALUES
+--    (1, 1, "primer modulo"),
+--    (2, 1, "segundo modulo"),
+--    (3, 1, "tercer modulo"),
+--    (4, 1, "cuarto modulo"),
+--    (5, 1, "quinto modulo"),
+--    (6, 1, "sexto modulo");
+--
+--INSERT INTO varano.student (`id_student`, `active`, `address`, `age`, `birth`, `birth_cert`, `cell_phone`, `course`, `disability`, `dni`, `health`, `last_name`, `legajo`, `line_phone`, `mail`, `matricula`, `name`, `sex`, `study_cert`) VALUES
+--(1, b'1', 'Calle 513', 22, '2001-02-27', b'1', 1252425124, 1, b'0', 42512355, b'1', 'Rodrigez', NULL, 912951054, 'pedro@gmail.com', 2023001, 'Pedro', 'M', b'1'),
+--(2, b'1', 'Calle 201', 20, '1999-04-02', b'1', 1560198910, 1, b'0', 40198501, b'1', 'García', 6155, 9012490098, 'maria@gmail.com', 2023110, 'María', 'F', b'1'),
+--(3, b'1', 'Calle 994', 20, '2010-10-09', b'1', 1905909128, 3, b'0', 44123506, b'1', 'Gutiérrez', 9981, 185928492, 'julian@hotmail.com', 2023454, 'Julián', 'M', b'1'),
+--(4, b'1', 'Junín 415', 21, '2002-12-13', b'1', 12356717123, 3, b'0', 30124541, b'1', 'Fernandez', 6755, NULL, 'pao@hotmail.com', 12223, 'Paola', 'F', b'1'),
+--(5, b'1', 'Junín 415', 21, '2001-12-14', b'1', 12356717123, 2, b'0', 30124541, b'1', 'Fernandez', 6655, NULL, 'martina@hotmail.com', 12223, 'Martina', 'F', b'1'),
+--(6, b'1', 'Calle nueva 5671', 28, '1995-07-21', b'1', 5129950012, 4, b'0', 37180501, b'1', 'Guerrero', NULL, 5513566461, 'ultima-prueba@gmail.com', 2023690, 'Pedro', 'M', b'1'),
+--(7, b'1', 'Santa Fe 4512', 21, '2002-03-27', b'1', 516167126, 3, b'0', 43100510, b'1', 'Ivarra', 1771, 778163246, 'aleivarra@gmail.com', 2023901, 'Alejandro', 'M', b'1'),
+--(8, b'1', 'Belgrano 512', 22, '2002-01-01', b'1', 660012309, 1, b'0', 42978109, b'1', 'Herrera', 2323, 5198375189, 'julieta@google.com', 2024008, 'Julieta', 'F', b'1'),
+--(9, b'1', 'Saenz Peña 6413', 23, '2000-11-28', b'1', 5136617, 4, b'0', 41005150, b'1', 'Juarez', 8084, 1237671341, 'ariel@hotmail.com', 2024101, 'Ariel', 'M', b'1'),
+--(10, b'1', 'Lisandro de la Torre 100', 27, '1996-09-08', b'1', 4136136, 2, b'0', 39012950, b'1', 'Pineda', 5031, 7147147134, 'ferpineda@hotmail.com', 2024914, 'Fernando', 'M', b'1'),
+--(11, b'1', 'Italia 907', 30, '1993-08-12', b'0', 51236172178, 2, b'0', 34100489, b'1', 'Gutierrez', NULL, 123612355, 'dai@google.com', 2024661, 'Daiana', 'F', b'1'),
+--(12, b'1', 'Velez Sarfienld 881', 25, '1998-05-12', b'1', 51261261, 5, b'0', 38001249, b'1', 'Gomez', NULL, 347141436, 'jimegomez@hotmail.com', 2022991, 'Jimena', 'F', b'0'),
+--(13, b'1', 'Juan B. Justo 2142', 24, '1999-03-09', b'1', 123612361, 5, b'0', 40012141, b'1', 'Montés', 12, 46243262, 'mariana@google.com', 2021121, 'Mariana', 'F', b'1'),
+--(14, b'1', 'San Martín 561', 29, '1994-10-15', b'1', 163471146, 3, b'0', 38123501, b'0', 'Maciel', 9854, 357427, 'javier-maciel@gmail.com', 2021935, 'Javier', 'M', b'1'),
+--(15, b'1', 'Calle 601', 20, '2003-04-28', b'1', 512361, 5, b'0', 43125601, b'1', 'Garcia', 9128, 54362561, 'sofia-garcia@hotmail.com', 2022519, 'Sofia', 'F', b'1'),
+--(16, b'1', 'Alvear 61', 26, '1997-12-09', b'1', 641371, 5, b'0', 39135063, b'1', 'Fernandez', 1151, 5725723111, 'manu-fer@google.com', 2021166, 'Manuel', 'M', b'1'),
+--(17, b'1', 'Belgrano 50', 24, '1999-04-05', b'1', 45147147, 5, b'0', 40553101, b'1', 'Navarro', 9518, 67578212324, 'ana-n@google.com', 2020856, 'Ana', 'F', b'1'),
+--(18, b'1', 'Dorrego 6022', 28, '1995-04-08', b'1', 657878671, 5, b'0', 32059112, b'1', 'Castillo', 921, 1235125777, 'elena@gmail.com', 2020686, 'Elena', 'F', b'1'),
+--(19, b'1', 'Calle 771', 21, '2002-02-03', b'0', 526161, 3, b'0', 39120415, b'1', 'Marín', 101, 515125, 'manuela@google.com', 2023148, 'Manuela', 'F', b'0'),
+--(20, b'1', 'Calle 10', 33, '1990-07-20', b'1', 3515102395, 3, b'0', 31058195, b'1', 'Rodenas', 601, NULL, 'paula@hotmail.com', 2021501, 'Paula', 'F', b'1'),
+--(21, b'1', 'Liniers 691', 23, '2000-03-12', b'1', 61298365, 2, b'0', 40125691, b'1', 'Ortega', 9921, NULL, 'tati-ortega@gmail.com', 20231462, 'Tatiana', 'F', b'1');
