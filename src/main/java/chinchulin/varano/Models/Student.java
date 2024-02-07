@@ -3,11 +3,11 @@ package chinchulin.varano.Models;
 import java.sql.Date;
 import java.util.List;
 
+import chinchulin.varano.Payloads.DTO.StudentDTO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,26 +33,21 @@ public class Student {
     Long id_student;
 
     @Column(name = "name")
-    @Nonnull
     String name;
 
     @Column(name = "last_name")
-    @Nonnull
     String lastName;
 
     @Column(name = "birth")
-    @Nonnull
     Date birth;
 
     @Column(name = "sex")
     String sex;
 
     @Column(name = "address")
-    @Nonnull
     String address;
 
     @Column(name = "dni")
-    @Nonnull
     Integer dni;
 
     @Column(name = "cell_phone")
@@ -79,8 +74,8 @@ public class Student {
     @Column(name = "study_cert")
     Boolean studyCert;
 
-    // acá decidí ponerle curso porque si le ponía año nos ibamos a confundir
-    // dudas sobre si añadir esto como uno de los modulos
+    // Acá decidí ponerle curso porque si le ponía año nos íbamos a confundir
+    // dudas sobre si añadir esto como uno de los módulos.
     @Column(name = "course")
     int course;
 
@@ -95,8 +90,36 @@ public class Student {
 
     @ManyToMany
     @JsonBackReference(value = "subjects")
-
-    @JoinTable(name = "student_subject", joinColumns = @JoinColumn(name = "id_student"), inverseJoinColumns = @JoinColumn(name = "id_subject"))
+    @JoinTable(
+            name = "student_subject",
+            joinColumns = @JoinColumn(name = "id_student"),
+            inverseJoinColumns = @JoinColumn(name = "id_subject")
+    )
     List<Subject> subjects;
 
+    public StudentDTO toStudentDTO() {
+        return new StudentDTO(
+                this.getName(),
+                this.getLastName(),
+                this.getBirth(),
+                this.getSex(),
+                this.getAddress(),
+                this.getDni(),
+                this.getCellPhone(),
+                this.getLinePhone(),
+                this.getAge(),
+                this.getMail(),
+                this.getLegajo(),
+                this.getMatricula(),
+                this.getBirthCert(),
+                this.getStudyCert(),
+                this.getCourse(),
+                this.getDisability(),
+                this.getHealth()
+        );
+    }
+
+    public static List<StudentDTO> toListStudentDTO(List<Student> students) {
+        return students.stream().map(Student::toStudentDTO).toList();
+    }
 }

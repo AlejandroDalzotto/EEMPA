@@ -1,14 +1,16 @@
 package chinchulin.varano.Services.Student;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import chinchulin.varano.Payloads.DTO.StudentDTO;
+import chinchulin.varano.Payloads.Request.StudentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Student;
-import chinchulin.varano.Models.StudentAnswer;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Repositories.StudentRepo;
 import chinchulin.varano.Repositories.SubjectRepo;
@@ -23,74 +25,110 @@ public class StudentService implements StudentServiceInt {
     SubjectRepo subjectRepo;
 
     @Override
-    public List<Student> getAll() {
-        return repo.findAll();
+    public List<StudentDTO> getAll() {
+        List<Student> students = repo.findAll();
+        return Student.toListStudentDTO(students);
     }
 
     @Override
-    public Optional<Student> getById(Long id) {
-        return Optional.ofNullable(repo.findById(id)
+    public StudentDTO getById(Long id) {
+        Optional<Student> student = Optional.ofNullable(repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Student with id " + id + " not found")));
+
+        if (student.isEmpty()) {
+            throw new EntityNotFoundException("Student with id " + id + " not found");
+        }
+
+        return student.get().toStudentDTO();
     }
 
     @Override
-    public Student getByDNI(Long dni) {
-        return repo.getByDNI(dni);
+    public StudentDTO getByDNI(Long dni) {
+        return repo.getByDNI(dni).toStudentDTO();
     }
 
     @Override
-    public Student getByLegajo(Long legajo) {
-        return repo.getByLegajo(legajo);
+    public StudentDTO getByLegajo(Long legajo) {
+        return repo.getByLegajo(legajo).toStudentDTO();
     }
 
     @Override
-    public Student newStudent(Student student) {
-        return repo.save(student);
+    public StudentDTO newStudent(StudentRequest student) {
+        Student studentToSave = new Student();
+
+        // TODO: Para ahorrar esto se puede hacer un método en algún paquete tipo `Utils` para que haga esto y no tener que repetirlo.
+        studentToSave.setActive(true);
+        studentToSave.setAddress(student.getAddress());
+        studentToSave.setAge(student.getAge());
+        studentToSave.setBirth(student.getBirth());
+        studentToSave.setBirthCert(student.getBirthCert());
+        studentToSave.setCellPhone(student.getCellPhone());
+        studentToSave.setCourse(student.getCourse());
+        studentToSave.setDisability(student.getDisability());
+        studentToSave.setDni(student.getDni());
+        studentToSave.setHealth(student.getHealth());
+        studentToSave.setLastName(student.getLastName());
+        studentToSave.setLegajo(student.getLegajo());
+        studentToSave.setLinePhone(student.getLinePhone());
+        studentToSave.setMail(student.getMail());
+        studentToSave.setMatricula(student.getMatricula());
+        studentToSave.setName(student.getName());
+        studentToSave.setSex(student.getSex());
+        studentToSave.setStudyCert(student.getStudyCert());
+        studentToSave.setSubjects(Collections.emptyList());
+
+        return repo.save(studentToSave).toStudentDTO();
     }
 
-    // TODO: Estaría bueno considerar reemplazar esto con implementación para un
-    // PATCH request porque esto es una banda de data para la pobre red
+    /**
+     * TODO: Estaría bueno considerar reemplazar esto con implementación para un
+     * PATCH request porque esto es una banda de data para la pobre red.
+     */
     @Override
-    public Student editStudent(Long id, Student newStudent) {
-        return repo.findById(id)
-                .map(student -> {
-                    student.setActive(newStudent.getActive());
-                    student.setAddress(newStudent.getAddress());
-                    student.setAge(newStudent.getAge());
-                    student.setBirth(newStudent.getBirth());
-                    student.setBirthCert(newStudent.getBirthCert());
-                    student.setCellPhone(newStudent.getCellPhone());
-                    student.setCourse(newStudent.getCourse());
-                    student.setDisability(newStudent.getDisability());
-                    student.setDni(newStudent.getDni());
-                    student.setHealth(newStudent.getHealth());
-                    student.setLastName(newStudent.getLastName());
-                    student.setLegajo(newStudent.getLegajo());
-                    student.setLinePhone(newStudent.getLinePhone());
-                    student.setMail(newStudent.getMail());
-                    student.setMatricula(newStudent.getMatricula());
-                    student.setName(newStudent.getName());
-                    student.setSex(newStudent.getSex());
-                    student.setStudyCert(newStudent.getStudyCert());
-                    student.setSubjects(newStudent.getSubjects());
-                    return repo.save(student);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + id));
+    public StudentDTO editStudent(Long dni, StudentRequest newStudent) {
+        Student student = repo.getByDNI(dni);
+
+        if (student == null || !student.getActive()) {
+            throw new EntityNotFoundException("No se ha encontrado al alumno con el DNI " + dni);
+        }
+
+        student.setAddress(newStudent.getAddress());
+        student.setAge(newStudent.getAge());
+        student.setBirth(newStudent.getBirth());
+        student.setBirthCert(newStudent.getBirthCert());
+        student.setCellPhone(newStudent.getCellPhone());
+        student.setCourse(newStudent.getCourse());
+        student.setDisability(newStudent.getDisability());
+        student.setDni(newStudent.getDni());
+        student.setHealth(newStudent.getHealth());
+        student.setLastName(newStudent.getLastName());
+        student.setLegajo(newStudent.getLegajo());
+        student.setLinePhone(newStudent.getLinePhone());
+        student.setMail(newStudent.getMail());
+        student.setMatricula(newStudent.getMatricula());
+        student.setName(newStudent.getName());
+        student.setSex(newStudent.getSex());
+        student.setStudyCert(newStudent.getStudyCert());
+        return repo.save(student).toStudentDTO();
     }
 
     @Override
-    public Student inactiveStudent(Long id) {
-        return repo.findById(id)
-                .map(student -> {
-                    student.setActive(!student.getActive());
-                    return repo.save(student);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + id));
+    public StudentDTO inactiveStudent(Long dni) {
+        Student student = repo.getByDNI(dni);
+
+        if (student == null || !student.getActive()) {
+            throw new EntityNotFoundException("No se ha encontrado al alumno con el DNI " + dni);
+        }
+
+        student.setActive(false);
+        return repo.save(student).toStudentDTO();
     }
 
     @Override
-    public List<Student> getAllActive() {
-        return repo.getAllActive();
+    public List<StudentDTO> getAllActive() {
+        List<Student> students = repo.getAllActive();
+
+        return Student.toListStudentDTO(students);
     }
 
     @Override
@@ -99,26 +137,23 @@ public class StudentService implements StudentServiceInt {
     }
 
     @Override
-    public StudentAnswer getByFilterQuery(String query, int limit, int offset) {
-        StudentAnswer response = new StudentAnswer();
-        response.setStudents(repo.getByFilterQuery(query, limit, offset));
-        response.setPages(pages(limit));
-        return response;
+    public List<StudentDTO> getByFilterQuery(String query, int limit, int offset) {
+        return Student.toListStudentDTO(repo.getByFilterQuery(query, limit, offset));
     }
 
     @Override
-    public StudentAnswer getAmountActive(int limit, int offset) {
-        StudentAnswer response = new StudentAnswer();
-        response.setPages(pages(limit));
-        response.setStudents(repo.getAmountActive(limit, offset));
-        return response;
+    public List<StudentDTO> getByQueryBlank(int limit, int offset) {
+        return Student.toListStudentDTO(repo.getByQueryBlank(limit, offset));
     }
 
-    public int pages(int limit) {
-        int pages = repo.getTotal() / limit;
-        if (((pages % limit) != 0)|| repo.getTotal() < limit) {
-            pages++;
-        }
-        return pages;
+    @Override
+    public Long count() {
+        return repo.count();
     }
+
+    @Override
+    public Long countByTerm(String term) {
+        return (long) repo.countByTerm(term);
+    }
+
 }

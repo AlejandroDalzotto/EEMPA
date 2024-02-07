@@ -8,7 +8,6 @@ public class VaranoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VaranoApplication.class, args);
-
 	}
 
 }
