@@ -10,8 +10,14 @@ import chinchulin.varano.Models.Student;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
 
+        @Query(value = "SELECT * FROM student u WHERE u.dni = :dni OR u.mail = :mail OR u.legajo = :legajo", nativeQuery = true)
+        Student isRegistered(@Param("dni") Long dni, @Param("mail") String mail, @Param("legajo") Long legajo);
+
         @Query(value = "SELECT * FROM student u WHERE u.dni = :dni", nativeQuery = true)
         Student getByDNI(@Param("dni") Long dni);
+
+        @Query(value = "SELECT * FROM student u WHERE u.mail = :mail", nativeQuery = true)
+        Student getByMail(@Param("mail") String mail);
 
         @Query(value = "SELECT * FROM student u WHERE u.legajo = :legajo", nativeQuery = true)
         Student getByLegajo(@Param("legajo") Long legajo);

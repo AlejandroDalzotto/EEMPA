@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import chinchulin.varano.Exceptions.EntityRepeatedException;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
 import chinchulin.varano.Payloads.Request.StudentRequest;
+import chinchulin.varano.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,26 +58,14 @@ public class StudentService implements StudentServiceInt {
     public StudentDTO newStudent(StudentRequest student) {
         Student studentToSave = new Student();
 
+        Student isRegistered = repo.isRegistered((long) student.getDni(), student.getMail(), student.getLegajo());
+
+        if (isRegistered != null) {
+            throw new EntityRepeatedException("Algunos datos proporcionados están repetidos. Por favor vuelva a intentarlo.");
+        }
+
         // TODO: Para ahorrar esto se puede hacer un método en algún paquete tipo `Utils` para que haga esto y no tener que repetirlo.
-        studentToSave.setActive(true);
-        studentToSave.setAddress(student.getAddress());
-        studentToSave.setAge(student.getAge());
-        studentToSave.setBirth(student.getBirth());
-        studentToSave.setBirthCert(student.getBirthCert());
-        studentToSave.setCellPhone(student.getCellPhone());
-        studentToSave.setCourse(student.getCourse());
-        studentToSave.setDisability(student.getDisability());
-        studentToSave.setDni(student.getDni());
-        studentToSave.setHealth(student.getHealth());
-        studentToSave.setLastName(student.getLastName());
-        studentToSave.setLegajo(student.getLegajo());
-        studentToSave.setLinePhone(student.getLinePhone());
-        studentToSave.setMail(student.getMail());
-        studentToSave.setMatricula(student.getMatricula());
-        studentToSave.setName(student.getName());
-        studentToSave.setSex(student.getSex());
-        studentToSave.setStudyCert(student.getStudyCert());
-        studentToSave.setSubjects(Collections.emptyList());
+        Utils.copyStudentProperties(student, studentToSave);
 
         return repo.save(studentToSave).toStudentDTO();
     }
@@ -92,23 +82,7 @@ public class StudentService implements StudentServiceInt {
             throw new EntityNotFoundException("No se ha encontrado al alumno con el DNI " + dni);
         }
 
-        student.setAddress(newStudent.getAddress());
-        student.setAge(newStudent.getAge());
-        student.setBirth(newStudent.getBirth());
-        student.setBirthCert(newStudent.getBirthCert());
-        student.setCellPhone(newStudent.getCellPhone());
-        student.setCourse(newStudent.getCourse());
-        student.setDisability(newStudent.getDisability());
-        student.setDni(newStudent.getDni());
-        student.setHealth(newStudent.getHealth());
-        student.setLastName(newStudent.getLastName());
-        student.setLegajo(newStudent.getLegajo());
-        student.setLinePhone(newStudent.getLinePhone());
-        student.setMail(newStudent.getMail());
-        student.setMatricula(newStudent.getMatricula());
-        student.setName(newStudent.getName());
-        student.setSex(newStudent.getSex());
-        student.setStudyCert(newStudent.getStudyCert());
+        Utils.copyStudentProperties(newStudent, student);
         return repo.save(student).toStudentDTO();
     }
 
