@@ -1,12 +1,12 @@
 package chinchulin.varano.Payloads.Request;
 
+import chinchulin.varano.Validations.Birthdate;
 import chinchulin.varano.Validations.Gender;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,8 @@ public class StudentRequest {
 
     @NotNull(message = "La fecha de nacimiento es un campo obligatorio.")
     @Past(message = "La fecha debe ser anterior a la fecha actual.")
-    Date birth;
+    @Birthdate(message = "La edad del alumno no es suficiente para ingresar al sistema.")
+    LocalDate birth;
 
     @NotNull(message = "El género es un campo obligatorio.")
     @Gender
@@ -42,9 +43,6 @@ public class StudentRequest {
 
     @Nullable
     Long linePhone;
-
-    @NotNull(message = "La edad es un campo obligatorio.")
-    int age;
 
     @NotNull(message = "El mail es un campo obligatorio.")
     @Email(message = "El campo mail debe ser un email valido. Por ejemplo: email-ejemplo@dominio.com")

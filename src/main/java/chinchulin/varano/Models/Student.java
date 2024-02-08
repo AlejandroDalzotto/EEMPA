@@ -1,6 +1,6 @@
 package chinchulin.varano.Models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import chinchulin.varano.Payloads.DTO.StudentDTO;
@@ -32,22 +32,22 @@ public class Student {
     @Column(name = "id_student")
     Long id_student;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 25)
     String name;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = 30)
     String lastName;
 
-    @Column(name = "birth")
-    Date birth;
+    @Column(name = "birth", nullable = false)
+    LocalDate birth;
 
-    @Column(name = "sex")
+    @Column(name = "sex", nullable = false)
     String sex;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     String address;
 
-    @Column(name = "dni")
+    @Column(name = "dni", nullable = false, unique = true)
     Integer dni;
 
     @Column(name = "cell_phone")
@@ -56,37 +56,34 @@ public class Student {
     @Column(name = "line_phone")
     Long linePhone;
 
-    @Column(name = "age")
-    int age;
-
-    @Column(name = "mail")
+    @Column(name = "mail", unique = true, nullable = false)
     String mail;
 
-    @Column(name = "legajo")
+    @Column(name = "legajo", unique = true)
     Long legajo;
 
-    @Column(name = "matricula")
+    @Column(name = "matricula", nullable = false)
     Long matricula;
 
-    @Column(name = "birth_cert")
+    @Column(name = "birth_cert", nullable = false)
     Boolean birthCert;
 
-    @Column(name = "study_cert")
+    @Column(name = "study_cert", nullable = false)
     Boolean studyCert;
 
     // Acá decidí ponerle curso porque si le ponía año nos íbamos a confundir
     // dudas sobre si añadir esto como uno de los módulos.
-    @Column(name = "course")
+    @Column(name = "course", nullable = false)
     int course;
 
-    @Column(name = "disability")
+    @Column(name = "disability", nullable = false)
     Boolean disability;
 
-    @Column(name = "health")
+    @Column(name = "health", nullable = false)
     Boolean health;
 
-    @Column(name = "active")
-    Boolean active;
+    @Column(name = "active", nullable = false)
+    Boolean active = true;
 
     @ManyToMany
     @JsonBackReference(value = "subjects")
@@ -107,7 +104,6 @@ public class Student {
                 this.getDni(),
                 this.getCellPhone(),
                 this.getLinePhone(),
-                this.getAge(),
                 this.getMail(),
                 this.getLegajo(),
                 this.getMatricula(),

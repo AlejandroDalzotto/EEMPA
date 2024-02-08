@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -13,13 +13,12 @@ public class StudentDTO {
 
     String name;
     String lastName;
-    Date birth;
+    LocalDate birth;
     String sex;
     String address;
     Integer dni;
     Long cellPhone;
     Long linePhone;
-    Integer age;
     String mail;
     Long legajo;
     Long matricula;
