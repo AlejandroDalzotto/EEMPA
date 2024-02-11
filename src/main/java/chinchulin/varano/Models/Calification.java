@@ -1,13 +1,6 @@
 package chinchulin.varano.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,14 +11,18 @@ import lombok.NoArgsConstructor;
 public class Calification {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_calification")
-    Long id_calification;
+    private Long id_calification;
 
     @Column(name = "value")
-    String value;
+    private Long value;
 
-    @JsonBackReference(value = "student_module")
     @ManyToOne
-    @JoinColumn(name = "student_subject")
-    Student_subject student_subject;
+    @JoinColumn(name = "student_id")
+    private Student student;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 }

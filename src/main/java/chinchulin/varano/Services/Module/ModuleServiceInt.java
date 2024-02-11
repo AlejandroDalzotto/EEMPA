@@ -2,19 +2,20 @@ package chinchulin.varano.Services.Module;
 
 import java.util.List;
 
-import chinchulin.varano.Models.Module;
-import chinchulin.varano.Models.Subject;
+import chinchulin.varano.Payloads.DTO.ModuleDTO;
+import chinchulin.varano.Payloads.DTO.SubjectDTO;
+import chinchulin.varano.Payloads.Request.ModuleRequest;
 
 public interface ModuleServiceInt {
 
-    List<Module> getAll();
+    List<ModuleDTO> getAll();
 
-    List<Subject> getSubjectByModule(Long id);
+    List<SubjectDTO> getSubjectByModule(String name);
 
-    List<Module> getAllActive();
+    List<ModuleDTO> getAllActive();
 
-    Module add(Module module);
+    ModuleDTO add(ModuleRequest module);
 
-    Module inactiveSubject(Long id);
+    ModuleDTO inactiveSubject(String name);
 
 }

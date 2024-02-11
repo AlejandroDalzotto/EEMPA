@@ -3,13 +3,14 @@ package chinchulin.varano.Services.Student;
 import java.util.List;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
+import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.StudentRequest;
 
 public interface StudentServiceInt {
 
     List<StudentDTO> getAllActive();
 
-    List<Subject> getSubjectByStudent(Long id);
+    List<SubjectDTO> getSubjectByStudent(Long id);
 
     List<StudentDTO> getAll();
 

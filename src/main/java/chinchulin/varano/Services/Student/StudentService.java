@@ -1,11 +1,11 @@
 package chinchulin.varano.Services.Student;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import chinchulin.varano.Exceptions.EntityRepeatedException;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
+import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.StudentRequest;
 import chinchulin.varano.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class StudentService implements StudentServiceInt {
     @Override
     public List<StudentDTO> getAll() {
         List<Student> students = repo.findAll();
-        return Student.toListStudentDTO(students);
+        return StudentDTO.fromListStudent(students);
     }
 
     @Override
@@ -41,33 +41,47 @@ public class StudentService implements StudentServiceInt {
             throw new EntityNotFoundException("Student with id " + id + " not found");
         }
 
-        return student.get().toStudentDTO();
+        return StudentDTO.fromStudent(student.get());
     }
 
     @Override
     public StudentDTO getByDNI(Long dni) {
-        return repo.getByDNI(dni).toStudentDTO();
+        Student student = repo.getByDNI(dni);
+
+        if (student == null || !student.getActive()) {
+            throw new EntityNotFoundException("No se ha encontrado al alumno con DNI " + dni);
+        }
+
+        return StudentDTO.fromStudent(student);
     }
 
     @Override
     public StudentDTO getByLegajo(Long legajo) {
-        return repo.getByLegajo(legajo).toStudentDTO();
+
+        Student student = repo.getByLegajo(legajo);
+
+        if (student == null || !student.getActive()) {
+            throw new EntityNotFoundException("No se ha encontrado al alumno con legajo " + legajo);
+        }
+
+        return StudentDTO.fromStudent(student);
     }
 
     @Override
     public StudentDTO newStudent(StudentRequest student) {
         Student studentToSave = new Student();
 
-        Student isRegistered = repo.isRegistered((long) student.getDni(), student.getMail(), student.getLegajo());
+        Student isRegistered = repo.isRegistered(student.getDni(), student.getMail(), student.getLegajo());
 
         if (isRegistered != null) {
             throw new EntityRepeatedException("Algunos datos proporcionados están repetidos. Por favor vuelva a intentarlo.");
         }
 
-        // TODO: Para ahorrar esto se puede hacer un método en algún paquete tipo `Utils` para que haga esto y no tener que repetirlo.
         Utils.copyStudentProperties(student, studentToSave);
 
-        return repo.save(studentToSave).toStudentDTO();
+        repo.save(studentToSave);
+
+        return StudentDTO.fromStudent(studentToSave);
     }
 
     /**
@@ -83,7 +97,9 @@ public class StudentService implements StudentServiceInt {
         }
 
         Utils.copyStudentProperties(newStudent, student);
-        return repo.save(student).toStudentDTO();
+
+        repo.save(student);
+        return StudentDTO.fromStudent(student);
     }
 
     @Override
@@ -95,29 +111,34 @@ public class StudentService implements StudentServiceInt {
         }
 
         student.setActive(false);
-        return repo.save(student).toStudentDTO();
+
+        repo.save(student);
+        return StudentDTO.fromStudent(student);
     }
 
     @Override
     public List<StudentDTO> getAllActive() {
         List<Student> students = repo.getAllActive();
 
-        return Student.toListStudentDTO(students);
+        return StudentDTO.fromListStudent(students);
     }
 
     @Override
-    public List<Subject> getSubjectByStudent(Long id) {
-        return subjectRepo.getActiveSubjectByStudent(id);
+    public List<SubjectDTO> getSubjectByStudent(Long id) {
+        List<Subject> subjects = subjectRepo.getActiveSubjectByStudent(id);
+        return SubjectDTO.fromListSubject(subjects);
     }
 
     @Override
     public List<StudentDTO> getByFilterQuery(String query, int limit, int offset) {
-        return Student.toListStudentDTO(repo.getByFilterQuery(query, limit, offset));
+        List<Student> students = repo.getByFilterQuery(query, limit, offset);
+        return StudentDTO.fromListStudent(students);
     }
 
     @Override
     public List<StudentDTO> getByQueryBlank(int limit, int offset) {
-        return Student.toListStudentDTO(repo.getByQueryBlank(limit, offset));
+        List<Student> students = repo.getByQueryBlank(limit, offset);
+        return StudentDTO.fromListStudent(students);
     }
 
     @Override

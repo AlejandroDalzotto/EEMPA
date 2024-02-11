@@ -25,8 +25,8 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
         @Query(value = "SELECT * from student u WHERE u.active = true", nativeQuery = true)
         List<Student> getAllActive();
 
-        @Query(value = "SELECT * from student u WHERE u.id_subject=:subject AND active=true", nativeQuery = true)
-        List<Student> getActiveStudentBySubject(@Param("subject") Long id);
+        @Query(value = "SELECT * from student u WHERE u.id_subject=:id AND active=true", nativeQuery = true)
+        List<Student> getActiveStudentBySubject(@Param("id") Long id);
 
         @Query(value = "SELECT * FROM student u WHERE (u.name LIKE %:query% OR u.last_name LIKE %:query% OR u.address LIKE %:query% OR CAST(u.dni AS binary) LIKE %:query% OR CAST(u.legajo AS binary) LIKE %:query%) AND u.active = true LIMIT :limit OFFSET :offset", nativeQuery = true)
         List<Student> getByFilterQuery(@Param("query") String query, @Param("limit") int limit,

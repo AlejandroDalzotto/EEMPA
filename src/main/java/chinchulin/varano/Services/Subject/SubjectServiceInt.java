@@ -2,19 +2,20 @@ package chinchulin.varano.Services.Subject;
 
 import java.util.List;
 
-import chinchulin.varano.Models.Student;
-import chinchulin.varano.Models.Subject;
+import chinchulin.varano.Payloads.DTO.StudentDTO;
+import chinchulin.varano.Payloads.DTO.SubjectDTO;
+import chinchulin.varano.Payloads.Request.SubjectRequest;
 
 public interface SubjectServiceInt {
 
-    List<Subject> getAll();
+    List<SubjectDTO> getAll();
 
-    List<Student> getStudentBySubject(Long id);
+    List<StudentDTO> getStudentBySubject(Long id);
 
-    List<Subject> getAllActive();
+    List<SubjectDTO> getAllActive();
 
-    Subject add(Subject newSubject);
+    SubjectDTO add(SubjectRequest newSubject);
 
-    Subject inactiveSubject(Long id);
+    SubjectDTO inactiveSubject(Long id);
 
 }
