@@ -23,15 +23,15 @@ INSERT INTO
 VALUES
     (1, 1);
 
-INSERT INTO
-    module
-VALUES
-    (1, 1, "primer modulo"),
-    (1, 2, "segundo modulo"),
-    (1, 3, "tercer modulo"),
-    (1, 4, "cuarto modulo"),
-    (1, 5, "quinto modulo"),
-    (1, 6, "sexto modulo");
+--INSERT INTO
+--    module
+--VALUES
+--    (1, 1, "primer modulo"),
+--    (1, 2, "segundo modulo"),
+--    (1, 3, "tercer modulo"),
+--    (1, 4, "cuarto modulo"),
+--    (1, 5, "quinto modulo"),
+--    (1, 6, "sexto modulo");
 
 INSERT INTO varano.student (`id_student`, `active`, `address`, `birth`, `birth_cert`, `cell_phone`, `course`, `disability`, `dni`, `health`, `last_name`, `legajo`, `line_phone`, `mail`, `matricula`, `name`, `sex`, `study_cert`) VALUES
 (1, true, 'Calle 513', '2001-02-27', true, 1252425124, 1, false, 42512355, true, 'Rodrigez', NULL, 912951054, 'pedro@gmail.com', 2023001, 'Pedro', 'M', true),

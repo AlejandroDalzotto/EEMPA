@@ -1,16 +1,9 @@
 package chinchulin.varano.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,21 +14,19 @@ import lombok.NoArgsConstructor;
 public class Subject {
 
     @Id
-    @Column(name = "id_subject")
-    Long id_subject;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_subject;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "name", nullable = false, length = 25)
+    private String name;
 
     @Column(name = "active")
-    Boolean active;
+    private Boolean active;
 
-    @JsonBackReference(value="subjects")
     @ManyToMany(mappedBy = "subjects")
-    List<Student> students;
+    private List<Student> students = new ArrayList<>();
 
-    @JsonBackReference(value = "id_module")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_module")
-    Module id_module;
+    private Module module;
 }
