@@ -1,11 +1,12 @@
 package chinchulin.varano.Services.Course;
 
-import java.util.Collections;
-import java.util.List;
-
 import chinchulin.varano.Exceptions.DataInconsistencyException;
+import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Exceptions.EntityRepeatedException;
-import chinchulin.varano.Models.*;
+import chinchulin.varano.Models.AcademicRecord;
+import chinchulin.varano.Models.Course;
+import chinchulin.varano.Models.Student;
+import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Payloads.DTO.CourseDTO;
 import chinchulin.varano.Payloads.DTO.SimpleCourseDTO;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
@@ -18,7 +19,9 @@ import chinchulin.varano.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import chinchulin.varano.Exceptions.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class CourseService implements CourseServiceInt {
@@ -112,32 +115,42 @@ public class CourseService implements CourseServiceInt {
             throw new DataInconsistencyException("El alumno " + student.getName() + " ya ha cursado " + newCourse.getName());
         }
 
-        List<Subject> newSubjects = subjectRepo.getSubjectsByCourse(newCourse.getId_course());
-
         Double average = calificationRepo.getAverageOfStudent(student.getId_student(), student.getCourse().getId_course());
 
         if (average == null) {
             throw new DataInconsistencyException("El alumno " + student.getName() + " no tiene registradas las notas de las materias de " + student.getCourse().getName());
         }
 
-        AcademicRecord newStudentAcademicRecord = new AcademicRecord();
+        AcademicRecord oldAcademicRecord = academicRecordRepo.getOneByCourseAndStudent(
+                student.getCourse().getId_course(),
+                student.getId_student()
+        );
 
-        AcademicState state = AcademicState.getStateByLabel(newEntry.getState());
+        if (oldAcademicRecord != null) {
+            oldAcademicRecord.setState(AcademicState.GRADUATED);
+            oldAcademicRecord.setAverage(average);
+            oldAcademicRecord.setComment(newEntry.getComment());
+
+            academicRecordRepo.save(oldAcademicRecord);
+        }
+
+        List<Subject> newSubjects = subjectRepo.getSubjectsByCourse(newCourse.getId_course());
+        AcademicRecord newAcademicRecord = new AcademicRecord();
 
         String newUniqueCode = Utils.generateUUID();
 
-        newStudentAcademicRecord.setStudent(student);
-        newStudentAcademicRecord.setUniqueCode(newUniqueCode);
-        newStudentAcademicRecord.setCourse(student.getCourse());
-        newStudentAcademicRecord.setState(state);
-        newStudentAcademicRecord.setComment(newEntry.getComment());
-        newStudentAcademicRecord.setStudyYear(newEntry.getStudy_year());
-        newStudentAcademicRecord.setAverage(average);
+        newAcademicRecord.setStudent(student);
+        newAcademicRecord.setUniqueCode(newUniqueCode);
+        newAcademicRecord.setCourse(newCourse);
+        newAcademicRecord.setState(AcademicState.REGULAR);
+        newAcademicRecord.setComment(null);
+        newAcademicRecord.setStudyYear((short) LocalDate.now().getYear());
+        newAcademicRecord.setAverage(0d);
 
         student.setCourse(newCourse);
         student.setSubjects(newSubjects);
 
-        academicRecordRepo.save(newStudentAcademicRecord);
+        academicRecordRepo.save(newAcademicRecord);
         studentRepo.save(student);
 
         return StudentDTO.fromStudent(student);

@@ -52,11 +52,10 @@ public class ExamController {
     @GetMapping("/get-records/{key}")
     public ApiResponse<List<ExamRecordDTO>> getExamByKeyWithRecords(
             @PathVariable("key") String key,
-            @RequestParam("limit") Integer limit,
-            @RequestParam("offset") Integer offset
+            @RequestParam(name = "limit", defaultValue = "10") Integer limit,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset
     ) {
         List<ExamRecordDTO> records = service.getRecordsByKey(key, limit, offset);
-
         return new ApiResponse<>(
                 HttpStatus.OK.value(),
                 "Registro obtenido con éxito",

@@ -21,9 +21,6 @@ public class PromoteStudentRequest {
     @Size(min = 3, max = 30, message = "El nombre del curso debe contener entre 3 y 30 caracteres.")
     private String new_course;
 
-    @NotNull(message = "El año de estudio es un campo obligatorio.")
-    private Short study_year;
-
     @Nullable
     private String comment = null;
 

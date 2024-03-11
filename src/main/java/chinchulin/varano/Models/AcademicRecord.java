@@ -25,7 +25,7 @@ public class AcademicRecord {
     @JoinColumn(name = "id_course")
     private Course course;
 
-    @Column(name = "study_year", nullable = false)
+    @Column(name = "study_year")
     private Short studyYear;
 
     @Enumerated(EnumType.STRING)
