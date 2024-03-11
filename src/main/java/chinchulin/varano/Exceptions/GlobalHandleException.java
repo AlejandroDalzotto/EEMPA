@@ -1,7 +1,6 @@
 package chinchulin.varano.Exceptions;
 
-import chinchulin.varano.Payloads.ApiOnErrorResponse;
-import chinchulin.varano.Payloads.ApiOnInvalidInputDataResponse;
+import chinchulin.varano.Payloads.ApiResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,12 +21,25 @@ public class GlobalHandleException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiOnErrorResponse handleNoResourceFoundException(EntityNotFoundException ex) {
+    public ApiResponse<Object> handleNoResourceFoundException(EntityNotFoundException ex) {
 
-        return new ApiOnErrorResponse(
+        return new ApiResponse<>(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
-                false
+                false,
+                null
+        );
+    }
+
+    @ExceptionHandler(DataInconsistencyException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ApiResponse<Object> handleDataInconsistencyException(DataInconsistencyException ex) {
+
+        return new ApiResponse<>(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                ex.getMessage(),
+                false,
+                null
         );
     }
 
@@ -41,7 +53,12 @@ public class GlobalHandleException extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ApiOnInvalidInputDataResponse response = new ApiOnInvalidInputDataResponse(HttpStatus.BAD_REQUEST.value(), errors, false);
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(
+                HttpStatus.BAD_REQUEST.value(),
+                "Algunos campos son incorrectos.",
+                false,
+                errors
+        );
 
         return ResponseEntity.badRequest().body(response);
 
@@ -49,12 +66,13 @@ public class GlobalHandleException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityRepeatedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiOnErrorResponse handleRepeatedEntityException(EntityRepeatedException ex) {
+    public ApiResponse<Object> handleRepeatedEntityException(EntityRepeatedException ex) {
 
-        return new ApiOnErrorResponse(
+        return new ApiResponse<>(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                false
+                false,
+                null
         );
     }
 }

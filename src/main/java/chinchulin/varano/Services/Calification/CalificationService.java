@@ -34,7 +34,7 @@ public class CalificationService implements CalificationServiceInt {
     public List<CalificationDTO> getAllGradesByStudent(Long student_dni) {
         return CalificationDTO.fromListCalification(
                 // TODO: Esto se puede interpolar a un custom query.
-                // Básicamente estamos filtrando todos los registros de la tabla califications
+                // Básicamente, estamos filtrando todos los registros de la tabla califications
                 // y buscando los que tengan un alumno con el DNI que buscamos.
                 repo.findAll().stream().filter(calification ->
                         Objects.equals(calification.getStudent().getDni(), student_dni)
@@ -46,12 +46,12 @@ public class CalificationService implements CalificationServiceInt {
     public CalificationDTO addCalification(CalificationRequest request) {
 
         Student student = studentRepo.getByDNI(request.getStudent_dni());
-        Subject subject = subjectRepo.getByName(request.getSubject());
 
         if (student == null) {
             throw new EntityNotFoundException("El alumno con el DNI " + request.getStudent_dni() + " no se ha encontrado.");
         }
 
+        Subject subject = subjectRepo.getByName(request.getSubject());
         if (subject == null) {
             throw new EntityNotFoundException("No se ha encontrado la materia " + request.getSubject());
         }

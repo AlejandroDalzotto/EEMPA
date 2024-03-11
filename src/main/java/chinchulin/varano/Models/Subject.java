@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "subject")
+@Table(name = "subjects")
 @NoArgsConstructor
 public class Subject {
 
@@ -17,7 +17,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_subject;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(name = "name", nullable = false, length = 25, unique = true)
     private String name;
 
     @Column(name = "active")
@@ -27,6 +27,6 @@ public class Subject {
     private List<Student> students = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_module")
-    private Module module;
+    @JoinColumn(name = "id_course")
+    private Course course;
 }

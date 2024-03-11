@@ -1,82 +1,130 @@
 package chinchulin.varano.Services.Module;
 
-import java.util.Collections;
-import java.util.List;
-
+import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Exceptions.EntityRepeatedException;
-import chinchulin.varano.Models.Subject;
+import chinchulin.varano.Models.Course;
+import chinchulin.varano.Models.Module;
 import chinchulin.varano.Payloads.DTO.ModuleDTO;
-import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.ModuleRequest;
+import chinchulin.varano.Repositories.CourseRepo;
+import chinchulin.varano.Repositories.ModuleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import chinchulin.varano.Exceptions.EntityNotFoundException;
-import chinchulin.varano.Models.Module;
-import chinchulin.varano.Repositories.ModuleRepo;
-import chinchulin.varano.Repositories.SubjectRepo;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class ModuleService implements ModuleServiceInt {
 
     @Autowired
-    ModuleRepo repo;
+    private ModuleRepo repo;
 
     @Autowired
-    SubjectRepo subjectRepo;
+    private CourseRepo courseRepo;
 
     @Override
-    public List<ModuleDTO> getAll() {
-        List<Module> modules = repo.findAll();
+    public List<ModuleDTO> getAllModules(Integer limit, Integer offset) {
+        List<Module> modules = repo.getAll(limit, offset);
+
         return ModuleDTO.fromListModule(modules);
     }
 
     @Override
-    public List<ModuleDTO> getAllActive() {
-        List<Module> modules = repo.getAllActive();
+    public List<ModuleDTO> getAllByTerm(String term, Integer limit, Integer offset) {
+        List<Module> modules = repo.getAllByTerm(term, limit, offset);
+
         return ModuleDTO.fromListModule(modules);
     }
 
     @Override
-    public ModuleDTO add(ModuleRequest module) {
-        Module isRegistered = repo.getByName(module.getName());
+    public List<ModuleDTO> getAllByCourse(String course_name) {
+        Course course = courseRepo.getByName(course_name);
 
-        if (isRegistered != null) {
-            throw new EntityRepeatedException("El modulo " + module.getName() + " ya existe en la base de datos");
+        if (course == null) {
+            throw new EntityNotFoundException("El curso " + course_name + " no existe en la base de datos.");
         }
 
-        Module moduleToSave = new Module();
-        moduleToSave.setName(module.getName());
-        moduleToSave.setActive(true);
-        moduleToSave.setSubjects(Collections.emptyList());
-        repo.save(moduleToSave);
-        return ModuleDTO.fromModule(moduleToSave);
+        List<Module> modules = course.getModules();
+        return ModuleDTO.fromListModule(modules);
     }
 
     @Override
-    public ModuleDTO inactiveSubject(String name) {
-        Module module = repo.getByName(name);
+    public Long countModules() {
 
-        if (module == null) {
-            throw new EntityNotFoundException("El modulo " + name + " no se ha encontrado.");
+        return repo.countTotal();
+    }
+
+    @Override
+    public Long countModulesByTerm(String term) {
+        return repo.countByTerm(term);
+    }
+
+    @Override
+    public ModuleDTO saveModule(ModuleRequest newEntry) {
+
+        Module existByName = repo.getByName(newEntry.getName());
+
+        if (existByName != null) {
+            throw new EntityRepeatedException("El modulo " + newEntry.getName() + " ya se encuentra registrado");
         }
 
-        module.setActive(false);
+        Course course = courseRepo.getByName(newEntry.getCourse_name());
+
+        if (course == null) {
+            throw new EntityNotFoundException("No existe el curso " + newEntry.getCourse_name() + " en la base de datos.");
+        }
+
+        Module module = new Module();
+
+        module.setName(newEntry.getName());
+        module.setExams(Collections.emptyList());
+        module.setCourse(course);
+
         repo.save(module);
+
         return ModuleDTO.fromModule(module);
     }
 
     @Override
-    public List<SubjectDTO> getSubjectByModule(String name) {
+    public ModuleDTO updateModule(String name, ModuleRequest newAttributes) {
+
+        Module moduleFromDb = repo.getByName(name);
+
+        if (moduleFromDb == null) {
+            throw new EntityNotFoundException("El modulo " + name + " no se encuentra en la base de datos.");
+        }
+
+        Module hasRepeatedName = repo.getByName(newAttributes.getName());
+
+        if (hasRepeatedName != null && !newAttributes.getName().equals(name)) {
+            throw new EntityRepeatedException("El modulo " + newAttributes.getName() + " ya se encuentra registrado.");
+        }
+
+        Course course = courseRepo.getByName(newAttributes.getCourse_name());
+
+        if (course == null) {
+            throw new EntityNotFoundException("El curso " + newAttributes.getCourse_name() + " no se encuentra en la base de datos.");
+        }
+
+        moduleFromDb.setName(newAttributes.getName());
+        moduleFromDb.setCourse(course);
+
+        repo.save(moduleFromDb);
+
+        return ModuleDTO.fromModule(moduleFromDb);
+    }
+
+    @Override
+    public ModuleDTO deleteModule(String name) {
 
         Module module = repo.getByName(name);
 
         if (module == null) {
-            throw new EntityNotFoundException("No se ha encontrado el modulo " + name);
+            throw new EntityNotFoundException("El modulo " + name + " no se encuentra en la base de datos.");
         }
 
-        List<Subject> subject = subjectRepo.getSubjectsByModule(module.getId_module());
-        return SubjectDTO.fromListSubject(subject);
+        repo.delete(module);
+        return ModuleDTO.fromModule(module);
     }
-
 }

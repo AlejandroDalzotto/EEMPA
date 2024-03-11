@@ -2,11 +2,10 @@ package chinchulin.varano.Models;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "student")
+@Table(name = "students")
 @CrossOrigin("localhost:3000")
 public class Student {
 
@@ -35,7 +34,7 @@ public class Student {
     @Column(name = "sex", nullable = false)
     private String sex;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address", nullable = false, length = 55)
     private String address;
 
     @Column(name = "dni", nullable = false, unique = true)
@@ -47,10 +46,10 @@ public class Student {
     @Column(name = "line_phone")
     private Long linePhone;
 
-    @Column(name = "mail", unique = true, nullable = false)
+    @Column(name = "mail", unique = true, nullable = false, length = 30)
     private String mail;
 
-    @Column(name = "legajo", unique = true)
+    @Column(name = "legajo")
     private Long legajo;
 
     @Column(name = "matricula", nullable = false)
@@ -62,10 +61,9 @@ public class Student {
     @Column(name = "study_cert", nullable = false)
     private Boolean studyCert;
 
-    // Acá decidí ponerle curso porque si le ponía año nos íbamos a confundir
-    // dudas sobre si añadir esto como uno de los módulos.
-    @Column(name = "course", nullable = false)
-    private int course;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_course")
+    private Course course;
 
     @Column(name = "disability", nullable = false)
     private Boolean disability;
@@ -76,11 +74,18 @@ public class Student {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<ExamRecord> exams;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<AcademicRecord> records;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "student_subject",
+            name = "student_subjects",
             joinColumns = @JoinColumn(name = "id_student"),
             inverseJoinColumns = @JoinColumn(name = "id_subject")
     )
     private List<Subject> subjects;
+
 }

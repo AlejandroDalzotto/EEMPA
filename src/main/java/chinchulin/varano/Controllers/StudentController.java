@@ -1,19 +1,16 @@
 package chinchulin.varano.Controllers;
 
 import java.util.List;
+
+import chinchulin.varano.Payloads.ApiResponse;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
 import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.StudentRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import chinchulin.varano.Models.Subject;
 import chinchulin.varano.Services.Student.StudentService;
 import jakarta.annotation.Nullable;
@@ -25,59 +22,79 @@ public class StudentController {
     StudentService service;
 
     @GetMapping("/active")
-    public List<StudentDTO> getAllActive() {
-        return service.getAllActive();
+    public ApiResponse<List<StudentDTO>> getAllActive() {
+        List<StudentDTO> students = service.getAllActive();
+
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                students
+        );
     }
 
     @GetMapping("/all")
-    public List<StudentDTO> getAll() {
-        return service.getAll();
-    }
+    public ApiResponse<List<StudentDTO>> getAll() {
+        List<StudentDTO> students = service.getAll();
 
-    // TODO: Este método puede quedar a consideración de removerse
-    //  (El Front-end no va a contar con los IDs de los alumnos para enviarlos en los url y/o request).
-    @GetMapping("/get/{id}")
-    public StudentDTO getById(@PathVariable Long id) {
-
-        // TODO: Validar el parámetro `id`.
-
-        return service.getById(id);
-    }
-
-    // TODO: Este método puede quedar a consideración de removerse
-    //  (El Front-end no va a contar con los IDs de las materias para enviarlos en los url y/o request).
-    @GetMapping("/get/subject/{id}")
-    public List<SubjectDTO> getSubjectByStudent(@PathVariable Long id) {
-        return service.getSubjectByStudent(id);
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                students
+        );
     }
 
     @GetMapping("get/dni/{dni}")
-    public StudentDTO getByDNI(@PathVariable Long dni) {
+    public ApiResponse<StudentDTO> getByDNI(@PathVariable("dni") Long dni) {
 
-        // TODO: Validar el `dni` (null y mayor a 10M).
+        StudentDTO student = service.getByDNI(dni);
 
-        return service.getByDNI(dni);
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registro obtenido con éxito",
+                true,
+                student
+        );
     }
 
     @GetMapping("/get/legajo/{legajo}")
-    public StudentDTO getByLegajo(Long legajo) {
+    public ApiResponse<StudentDTO> getByLegajo(@PathVariable("legajo") Long legajo) {
 
-        // TODO: Validar el legajo
+        StudentDTO student = service.getByLegajo(legajo);
 
-        return service.getByLegajo(legajo);
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registro obtenido con éxito",
+                true,
+                student
+        );
     }
 
     @GetMapping("/all/filter")
-    public List<StudentDTO> getByFilter(
+    public ApiResponse<List<StudentDTO>> getByFilter(
             @RequestParam(name = "query", required = false) @Nullable String query,
-            @RequestParam(name = "limit") Integer limit,
-            @RequestParam(name = "offset") Integer offset
+            @RequestParam(name = "limit", defaultValue = "10") Integer limit,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset
     ) {
-        // TODO: Acá se valida la query pero no los demás (Se pueden especificar valores por defecto en @RequestParam).
         if (query == null || query.isEmpty()) {
-            return service.getByQueryBlank(limit, offset);
+            List<StudentDTO> students = service.getByQueryBlank(limit, offset);
+
+            return new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Registros obtenidos con éxito",
+                    true,
+                    students
+            );
         }
-        return service.getByFilterQuery(query, limit, offset);
+        List<StudentDTO> students = service.getByFilterQuery(query, limit, offset);
+
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                students
+        );
     }
 
     @GetMapping("/all/pages")
@@ -90,25 +107,43 @@ public class StudentController {
         return service.countByTerm(query);
     }
 
-    // TODO: Retornar un HttpStatus.CREATED si se logra crear una entidad.
     @PostMapping("/add")
-    public StudentDTO newStudent(@Valid @RequestBody StudentRequest student) {
-        return service.newStudent(student);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<StudentDTO> newStudent(@Valid @RequestBody StudentRequest student) {
+        StudentDTO studentDTO = service.newStudent(student);
+
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Registro guardado con éxito",
+                true,
+                studentDTO
+        );
     }
 
     @PutMapping("/edit/{dni}")
-    public StudentDTO editStudent(@PathVariable("dni") Long dni, @Valid @RequestBody StudentRequest student) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<StudentDTO> editStudent(@PathVariable("dni") Long dni, @Valid @RequestBody StudentRequest student) {
 
-        // TODO: Validar `dni` (null y mayor a 10M).
+        StudentDTO studentDTO = service.editStudent(dni, student);
 
-        return service.editStudent(dni, student);
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Registro guardado con éxito",
+                true,
+                studentDTO
+        );
     }
 
     @PutMapping("/inactive/{dni}")
-    public StudentDTO inactiveStudent(@PathVariable("dni") Long dni) {
+    public ApiResponse<StudentDTO> inactiveStudent(@PathVariable("dni") Long dni) {
 
-        // TODO: Validar `dni` (null y mayor a 10M).
+        StudentDTO student = service.inactiveStudent(dni);
 
-        return service.inactiveStudent(dni);
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registro deshabilitado con éxito",
+                true,
+                student
+        );
     }
 }

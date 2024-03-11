@@ -26,7 +26,7 @@ public class StudentDTO {
     private Long matricula;
     private Boolean birthCert;
     private Boolean studyCert;
-    private Integer course;
+    private String course;
     private Boolean disability;
     private Boolean health;
 
@@ -45,7 +45,7 @@ public class StudentDTO {
                 student.getMatricula(),
                 student.getBirthCert(),
                 student.getStudyCert(),
-                student.getCourse(),
+                student.getCourse().getName(),
                 student.getDisability(),
                 student.getHealth()
         );

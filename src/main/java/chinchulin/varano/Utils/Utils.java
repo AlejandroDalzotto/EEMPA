@@ -5,6 +5,7 @@ import chinchulin.varano.Payloads.Request.StudentRequest;
 
 import java.sql.Date;
 import java.util.Collections;
+import java.util.UUID;
 
 public class Utils {
 
@@ -13,7 +14,6 @@ public class Utils {
         studentToSave.setBirthCert(student.getBirthCert());
         studentToSave.setBirth(student.getBirth());
         studentToSave.setCellPhone(student.getCellPhone());
-        studentToSave.setCourse(student.getCourse());
         studentToSave.setDisability(student.getDisability());
         studentToSave.setDni(student.getDni());
         studentToSave.setHealth(student.getHealth());
@@ -25,5 +25,10 @@ public class Utils {
         studentToSave.setName(student.getName());
         studentToSave.setSex(student.getSex());
         studentToSave.setStudyCert(student.getStudyCert());
+    }
+
+    public static String generateUUID() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
     }
 }

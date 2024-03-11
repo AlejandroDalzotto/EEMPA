@@ -1,12 +1,18 @@
 package chinchulin.varano.Services.Student;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import chinchulin.varano.Exceptions.EntityRepeatedException;
+import chinchulin.varano.Models.AcademicRecord;
+import chinchulin.varano.Models.Course;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
 import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.StudentRequest;
+import chinchulin.varano.Repositories.AcademicRecordRepo;
+import chinchulin.varano.Repositories.CourseRepo;
+import chinchulin.varano.Utils.AcademicState;
 import chinchulin.varano.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +26,18 @@ import chinchulin.varano.Repositories.SubjectRepo;
 @Service
 public class StudentService implements StudentServiceInt {
 
-    @Autowired
-    StudentRepo repo;
+    private final StudentRepo repo;
+    private final SubjectRepo subjectRepo;
+    private final CourseRepo courseRepo;
+    private final AcademicRecordRepo academicRecordRepo;
 
     @Autowired
-    SubjectRepo subjectRepo;
+    public StudentService(StudentRepo repo, SubjectRepo subjectRepo, CourseRepo courseRepo, AcademicRecordRepo academicRecordRepo) {
+        this.repo = repo;
+        this.subjectRepo = subjectRepo;
+        this.courseRepo = courseRepo;
+        this.academicRecordRepo = academicRecordRepo;
+    }
 
     @Override
     public List<StudentDTO> getAll() {
@@ -68,18 +81,46 @@ public class StudentService implements StudentServiceInt {
     }
 
     @Override
-    public StudentDTO newStudent(StudentRequest student) {
-        Student studentToSave = new Student();
+    public StudentDTO newStudent(StudentRequest newEntry) {
 
-        Student isRegistered = repo.isRegistered(student.getDni(), student.getMail(), student.getLegajo());
-
+        // Check if unique values are repeated.
+        Student isRegistered = repo.isRegistered(newEntry.getDni(), newEntry.getMail());
         if (isRegistered != null) {
             throw new EntityRepeatedException("Algunos datos proporcionados están repetidos. Por favor vuelva a intentarlo.");
         }
 
-        Utils.copyStudentProperties(student, studentToSave);
+        Course course = courseRepo.getByName(newEntry.getCourse_name());
 
+        // Check if the course exists by name.
+        if (course == null) {
+            throw new EntityNotFoundException("El curso " + newEntry.getCourse_name() + " no se encuentra registrado.");
+        }
+
+        Student studentToSave = new Student();
+
+        // Fetch all subjects from the course.
+        List<Subject> subjects = subjectRepo.getSubjectsByCourse(course.getId_course());
+
+        Utils.copyStudentProperties(newEntry, studentToSave);
+        studentToSave.setCourse(course);
+        studentToSave.setSubjects(subjects);
         repo.save(studentToSave);
+
+        // Construct the academic record for the new student
+        AcademicRecord academicRecord = new AcademicRecord();
+
+        String uniqueCode = Utils.generateUUID();
+
+        academicRecord.setStudent(studentToSave);
+        academicRecord.setUniqueCode(uniqueCode);
+        academicRecord.setComment(null);
+        academicRecord.setCourse(course);
+        academicRecord.setState(AcademicState.REGULAR);
+        academicRecord.setStudyYear((short) LocalDate.now().getYear());
+        academicRecord.setAverage(0d);
+
+        // Save the new record
+        academicRecordRepo.save(academicRecord);
 
         return StudentDTO.fromStudent(studentToSave);
     }
@@ -143,7 +184,7 @@ public class StudentService implements StudentServiceInt {
 
     @Override
     public Long count() {
-        return repo.count();
+        return (long) repo.countActive();
     }
 
     @Override

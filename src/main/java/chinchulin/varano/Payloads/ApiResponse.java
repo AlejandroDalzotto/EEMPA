@@ -5,11 +5,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ApiOnErrorResponse {
+public class ApiResponse<T> {
 
     private Integer status;
 
     private String message;
 
     private Boolean success;
+
+    private T data;
 }

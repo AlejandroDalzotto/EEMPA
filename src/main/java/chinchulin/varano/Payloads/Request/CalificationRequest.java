@@ -12,7 +12,7 @@ public class CalificationRequest {
     @Positive(message = "La nota debe ser un valor positivo.")
     @Max(value = 10, message = "El valor máximo permitido es 10.")
     @Min(value = 0, message = "El valor mínimo permitido es 0")
-    private Long grade;
+    private Float grade;
 
     @NotNull(message = "El DNI es un campo obligatorio.")
     @Positive(message = "El DNI no puede ser un número negativo.")

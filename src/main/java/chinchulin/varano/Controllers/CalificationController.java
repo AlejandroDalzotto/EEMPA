@@ -1,10 +1,13 @@
 package chinchulin.varano.Controllers;
 
+import chinchulin.varano.Payloads.ApiResponse;
 import chinchulin.varano.Payloads.DTO.CalificationDTO;
 import chinchulin.varano.Payloads.Request.CalificationRequest;
 import chinchulin.varano.Services.Calification.CalificationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +21,30 @@ public class CalificationController {
     CalificationService service;
 
     @GetMapping("/grades/{dni}")
-    public List<CalificationDTO> getAllGradesByStudent(@PathVariable("dni") Long dni) {
+    public ApiResponse<List<CalificationDTO>> getAllGradesByStudent(@PathVariable("dni") Long dni) {
 
         // TODO: Validar el DNI (null y si es valido, mayor a 10M o cualquier validación necesaria)
 
-        return service.getAllGradesByStudent(dni);
+        List<CalificationDTO> califications = service.getAllGradesByStudent(dni);
+
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                califications
+        );
     }
 
-    // TODO: Retornar el objeto más adecuado (Puede modificarse el DTO) con el HttpStatus.CREATED.
     @PostMapping("/add")
-    public CalificationDTO addCalificationToStudent(@Valid @RequestBody CalificationRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<CalificationDTO> addCalificationToStudent(@Valid @RequestBody CalificationRequest request) {
+        CalificationDTO dto = service.addCalification(request);
 
-        return service.addCalification(request);
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Calificación añadida con éxito",
+                true,
+                dto
+        );
     }
 }

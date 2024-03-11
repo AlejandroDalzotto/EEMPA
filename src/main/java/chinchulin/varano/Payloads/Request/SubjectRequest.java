@@ -13,7 +13,7 @@ public class SubjectRequest {
     @Size(min = 3, max = 25, message = "El nombre debe contener entre 3 y 25 caracteres.")
     private String name;
 
-    @NotNull(message = "Por favor ingrese el nombre del modulo/año al cual quiere asignar la materia.")
-    @Size(min = 3, max = 30, message = "El nombre del modulo/año debe contener entre 3 y 30 caracteres.")
-    private String module_name;
+    @NotNull(message = "Por favor ingrese el nombre del curso/año al cual quiere asignar la materia.")
+    @Size(min = 3, max = 30, message = "El nombre del curso/año debe contener entre 3 y 30 caracteres.")
+    private String course_name;
 }

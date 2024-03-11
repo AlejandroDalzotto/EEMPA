@@ -13,14 +13,14 @@ import java.util.List;
 public class SubjectDTO {
     private String name;
 
-    private String module_name;
+    private String course_name;
 
     private List<StudentDTO> students;
 
     public static SubjectDTO fromSubject(Subject subject) {
         return new SubjectDTO(
                 subject.getName(),
-                subject.getModule().getName(),
+                subject.getCourse().getName(),
                 StudentDTO.fromListStudent(subject.getStudents())
         );
     }

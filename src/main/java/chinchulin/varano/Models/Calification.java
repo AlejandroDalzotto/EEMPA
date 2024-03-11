@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "calification")
+@Table(name = "califications")
 public class Calification {
 
     @Id
@@ -15,14 +15,14 @@ public class Calification {
     @Column(name = "id_calification")
     private Long id_calification;
 
-    @Column(name = "value")
-    private Long value;
+    @Column(name = "value", nullable = false)
+    private Float value;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "id_student", nullable = false)
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
+    @JoinColumn(name = "id_subject", nullable = false)
     private Subject subject;
 }

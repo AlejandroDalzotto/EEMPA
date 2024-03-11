@@ -3,12 +3,13 @@ package chinchulin.varano.Services.Subject;
 import java.util.Collections;
 import java.util.List;
 
-import chinchulin.varano.Models.Module;
+import chinchulin.varano.Exceptions.EntityRepeatedException;
+import chinchulin.varano.Models.Course;
 import chinchulin.varano.Models.Student;
 import chinchulin.varano.Payloads.DTO.StudentDTO;
 import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.SubjectRequest;
-import chinchulin.varano.Repositories.ModuleRepo;
+import chinchulin.varano.Repositories.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class SubjectService implements SubjectServiceInt {
     StudentRepo studentRepo;
 
     @Autowired
-    ModuleRepo moduleRepo;
+    CourseRepo courseRepo;
 
     @Override
     public List<SubjectDTO> getAll() {
@@ -44,19 +45,27 @@ public class SubjectService implements SubjectServiceInt {
     @Override
     public SubjectDTO add(SubjectRequest newSubject) {
 
-        Module module = moduleRepo.getByName(newSubject.getModule_name());
+        Course course = courseRepo.getByName(newSubject.getCourse_name());
 
-        if (module == null) {
-            throw new EntityNotFoundException("El modulo " + newSubject.getModule_name() + " no se ha podido encontrar.");
+        if (course == null) {
+            throw new EntityNotFoundException("El curso " + newSubject.getCourse_name() + " no se ha podido encontrar.");
+        }
+
+        Subject existByName = repo.getByName(newSubject.getName());
+
+        if (existByName != null) {
+            throw new EntityRepeatedException(
+                    String.format("La materia %s ya está registrada en el sistema", newSubject.getName())
+            );
         }
 
         Subject subject = new Subject();
 
         subject.setActive(true);
         subject.setName(newSubject.getName());
+        subject.setCourse(course);
         subject.setStudents(Collections.emptyList());
 
-        subject.setModule(module);
         repo.save(subject);
 
         return SubjectDTO.fromSubject(subject);

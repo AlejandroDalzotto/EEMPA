@@ -1,59 +1,107 @@
 package chinchulin.varano.Controllers;
 
-import java.util.List;
-
+import chinchulin.varano.Payloads.ApiResponse;
 import chinchulin.varano.Payloads.DTO.ModuleDTO;
-import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.ModuleRequest;
+import chinchulin.varano.Services.Module.ModuleService;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import chinchulin.varano.Services.Module.ModuleService;
+import java.util.List;
 
-@RequestMapping("/api/module")
 @RestController
+@RequestMapping("/api/module")
 public class ModuleController {
 
     @Autowired
-    ModuleService service;
+    private ModuleService service;
 
     @GetMapping("/all")
-    List<ModuleDTO> getAll() {
-        return service.getAll();
+    public ApiResponse<List<ModuleDTO>> getAllModules(
+            @RequestParam(name = "query", required = false) @Nullable String query,
+            @RequestParam(name = "limit", defaultValue = "10") Integer limit,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset
+    ) {
+        if (query == null || query.isEmpty()) {
+            List<ModuleDTO> modules = service.getAllModules(limit, offset);
+            return new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Registros obtenidos con éxito",
+                    true,
+                    modules
+            );
+        }
+
+        List<ModuleDTO> modulesFiltered = service.getAllByTerm(query, limit, offset);
+
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                modulesFiltered
+        );
     }
 
-    @GetMapping("/get/subject/{name}")
-    List<SubjectDTO> getSubjectByModule(@PathVariable("name") String name) {
+    @GetMapping("/all-by-course/{course}")
+    public ApiResponse<List<ModuleDTO>> getAllByCourse(@PathVariable("course") String course_name) {
+        List<ModuleDTO> modules = service.getAllByCourse(course_name);
 
-        // TODO: Validar el parámetro `name`
-
-        return service.getSubjectByModule(name);
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registros obtenidos con éxito",
+                true,
+                modules
+        );
     }
 
-    @GetMapping("/active")
-    List<ModuleDTO> getAllActive() {
-        return service.getAllActive();
+    @GetMapping("/all/pages")
+    public Long getTotalPages(
+            @RequestParam(name = "query", required = false) @Nullable String query
+    ) {
+        if (query == null || query.isEmpty()) {
+            return service.countModules();
+        }
+        return service.countModulesByTerm(query);
     }
 
-    @PostMapping("/add")
-    ModuleDTO add(@Valid @RequestBody ModuleRequest module) {
+    @PostMapping("/save-module")
+    public ApiResponse<ModuleDTO> saveModule(@RequestBody @Valid ModuleRequest newEntry) {
+        ModuleDTO module = service.saveModule(newEntry);
 
-        // TODO: Especificar el status de retorno en HttpStatus.CREATED
-        return service.add(module);
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Registro obtenido con éxito",
+                true,
+                module
+        );
     }
 
-    @PutMapping("/toggle/{name}")
-    ModuleDTO inactiveSubject(@PathVariable("name") String name) {
+    @PutMapping("/update-module/{name}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<ModuleDTO> updateModule(@PathVariable("name") String module_name, @RequestBody @Valid ModuleRequest newAttributes) {
+        ModuleDTO module = service.updateModule(module_name, newAttributes);
 
-        // TODO: Validar el parámetro `name`
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Registro guardado con éxito",
+                true,
+                module
+        );
+    }
 
-        return service.inactiveSubject(name);
+    @DeleteMapping("/delete-module/{name}")
+    public ApiResponse<ModuleDTO> deleteModule(@PathVariable("name") String module_name) {
+        ModuleDTO module = service.deleteModule(module_name);
+
+        return new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Registro deshabilitado con éxito",
+                true,
+                module
+        );
     }
 }

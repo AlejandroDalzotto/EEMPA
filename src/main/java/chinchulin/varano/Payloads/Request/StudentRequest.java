@@ -30,12 +30,11 @@ public class StudentRequest {
     private String sex;
 
     @NotNull(message = "La dirección es un campo obligatorio.")
-    @Size(min = 5, message = "La dirección debe tener un mínimo de 5 caracteres")
+    @Size(min = 5, max = 55, message = "La dirección debe tener un mínimo de 5 caracteres y como máximo 55.")
     private String address;
 
     @NotNull(message = "El DNI es un campo obligatorio.")
     @Positive(message = "El DNI no puede ser un número negativo.")
-    @Min(value = 10000001, message = "El DNI debe ser un número superior a 10 millones.")
     private Long dni;
 
     @Nullable
@@ -46,9 +45,10 @@ public class StudentRequest {
 
     @NotNull(message = "El mail es un campo obligatorio.")
     @Email(message = "El campo mail debe ser un email valido. Por ejemplo: email-ejemplo@dominio.com")
+    @Size(min = 5, max = 30, message = "El correo debe tener un mínimo de 5 caracteres y como máximo 30.")
     private String mail;
 
-    @NotNull(message = "El legajo es un campo obligatorio.")
+    @Nullable
     private Long legajo;
 
     @NotNull(message = "La matricula es un campo obligatorio.")
@@ -61,7 +61,8 @@ public class StudentRequest {
     private Boolean studyCert;
 
     @NotNull(message = "El alumno debe estar asignado a un curso.")
-    private Integer course;
+    @Size(min = 3, max = 30, message = "El nombre del curso debe contener entre 3 y 30 caracteres.")
+    private String course_name;
 
     @NotNull(message = "Debe ser especificado si el alumno tiene una condición de discapacidad o no.")
     private Boolean disability;

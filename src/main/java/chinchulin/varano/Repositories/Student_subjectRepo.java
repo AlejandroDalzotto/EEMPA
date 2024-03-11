@@ -8,7 +8,7 @@ import chinchulin.varano.Models.Student_subject;
 
 public interface Student_subjectRepo extends JpaRepository<Student_subject, Long> {
 
-    @Query(value = "SELECT * from student_subject u WHERE u.student_id = :student AND u.subject_id= :subject", nativeQuery = true)
+    @Query(value = "SELECT * from student_subjects u WHERE u.id_student = :student AND u.id_subject = :subject", nativeQuery = true)
     Student_subject getOne(@Param("student") Long student, @Param("subject") Long subject);
 
 }

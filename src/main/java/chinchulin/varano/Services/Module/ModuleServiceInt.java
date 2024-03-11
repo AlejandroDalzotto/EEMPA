@@ -1,21 +1,25 @@
 package chinchulin.varano.Services.Module;
 
-import java.util.List;
-
 import chinchulin.varano.Payloads.DTO.ModuleDTO;
-import chinchulin.varano.Payloads.DTO.SubjectDTO;
 import chinchulin.varano.Payloads.Request.ModuleRequest;
+
+import java.util.List;
 
 public interface ModuleServiceInt {
 
-    List<ModuleDTO> getAll();
+    List<ModuleDTO> getAllModules(Integer limit, Integer offset);
 
-    List<SubjectDTO> getSubjectByModule(String name);
+    List<ModuleDTO> getAllByTerm(String term, Integer limit, Integer offset);
 
-    List<ModuleDTO> getAllActive();
+    List<ModuleDTO> getAllByCourse(String course_name);
 
-    ModuleDTO add(ModuleRequest module);
+    Long countModules();
 
-    ModuleDTO inactiveSubject(String name);
+    Long countModulesByTerm(String term);
 
+    ModuleDTO saveModule(ModuleRequest newEntry);
+
+    ModuleDTO updateModule(String name, ModuleRequest newAttributes);
+
+    ModuleDTO deleteModule(String name);
 }

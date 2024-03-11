@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -13,13 +14,12 @@ import java.util.List;
 public class ModuleDTO {
 
     private String name;
-
-    private List<SubjectDTO> subjects;
+    private String course_name;
 
     public static ModuleDTO fromModule(Module module) {
         return new ModuleDTO(
                 module.getName(),
-                SubjectDTO.fromListSubject(module.getSubjects())
+                module.getCourse().getName()
         );
     }
 

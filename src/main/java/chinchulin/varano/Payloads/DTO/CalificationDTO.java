@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CalificationDTO {
 
-    private Long grade;
+    private Float grade;
 
     private String student;
 

@@ -13,8 +13,6 @@ import chinchulin.varano.Exceptions.EntityNotFoundException;
 import chinchulin.varano.Models.Student_subject;
 import chinchulin.varano.Repositories.Student_subjectRepo;
 
-import java.util.Collections;
-
 @Service
 public class Student_subjectService implements Student_subjectServiceInt {
 
