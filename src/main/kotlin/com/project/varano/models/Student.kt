@@ -20,8 +20,8 @@ data class Student(
     private val id: Long,
     @Column(nullable = false, length = 25)
     private val name: String,
-    @Column(name = "last_name", nullable = false, length = 30)
-    private val lastName: String,
+    @Column(name = "lastname", nullable = false, length = 30)
+    private val lastname: String,
     @Column(nullable = false)
     private val birthdate: LocalDate,
     @Column(nullable = false)
@@ -30,7 +30,7 @@ data class Student(
     @Column(nullable = false, length = 55)
     private val address: String,
     @Column(nullable = false, unique = true)
-    private val dni: Long,
+    private val dni: Int,
     @Column(name = "cell_phone")
     private val cellPhone: Long? = null,
     @Column(name = "line_phone")
